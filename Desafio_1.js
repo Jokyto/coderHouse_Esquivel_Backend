@@ -113,15 +113,47 @@ class ProductManager
     }
 }
 
-// const product = new ProductManager("./productos.json")
 
-// const element1 = {title: "producto prueba",description: "Este es un producto prueba",price: "200$",thumbnail: "Sin imagen",code:"abc123",stock: "25"}
+const product = new ProductManager("./productos.json")
+
+const element1 = {title: "Elemento1",description: "Este es el elemento1",price: "200$",thumbnail: "Sin imagen",code:"abc1",stock: "25"}
+const element2 = {title: "Elemento2",description: "Este es el elemento2",price: "250$",thumbnail: "Sin imagen",code:"abc2",stock: "25"}
+const element3 = {title: "Elemento3",description: "Este es el elemento3",price: "300$",thumbnail: "Sin imagen",code:"abc3",stock: "25"}
+const element4 = {title: "Elemento4",description: "Este es el elemento4",price: "350$",thumbnail: "Sin imagen",code:"abc4",stock: "25"}
+const element5 = {title: "Elemento5",description: "Este es el elemento5",price: "400$",thumbnail: "Sin imagen",code:"abc5",stock: "25"}
+const element6 = {title: "Elemento6",description: "Este es el elemento6",price: "450$",thumbnail: "Sin imagen",code:"abc6",stock: "25"}
+const element7 = {title: "Elemento7",description: "Este es el elemento7",price: "500$",thumbnail: "Sin imagen",code:"abc7",stock: "25"}
+const element8 = {title: "Elemento8",description: "Este es el elemento8",price: "550$",thumbnail: "Sin imagen",code:"abc8",stock: "25"}
+const element9 = {title: "Elemento9",description: "Este es el elemento9",price: "600$",thumbnail: "Sin imagen",code:"abc9",stock: "25"}
+const element10 = {title: "Elemento10",description: "Este es el elemento10",price: "650$",thumbnail: "Sin imagen",code:"abc10",stock: "25"}
+
+
+await product.addProduct(element1)
+
+await product.addProduct(element2)
+
+await product.addProduct(element3)
+
+await product.addProduct(element4)
+
+await product.addProduct(element5)
+
+await product.addProduct(element6)
+
+await product.addProduct(element7)
+
+await product.addProduct(element8)
+
+await product.addProduct(element9)
+
+await product.addProduct(element10)
+
+console.log(await product.getProducts())
+
+
+
 // const pruebaDeUpdate = {title: "update",description: "Prueba update",price: "150$",thumbnail: "Sin imagen",code:"UwU",stock: "25"}
-
-// console.log(await product.getProducts())
-// product.addProduct(element1)
 // console.log(await product.getProducts())
 // console.log(await product.getProductsById(1))
 // console.log(await product.updateProduct(1,pruebaDeUpdate))
 // console.log(await product.deleteProduct(1))
-

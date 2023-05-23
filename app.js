@@ -1,4 +1,10 @@
-[
+import express from 'express'
+
+const app = express();
+
+const error = [{error: 'El elemento que quiere acceder no existe!'}]
+
+const products = [
 	{
 		"id": 1,
 		"title": "Elemento1",
@@ -90,3 +96,31 @@
 		"stock": "25"
 	}
 ]
+
+
+app.get('/products', (request,response) => 
+{
+    const limitsProducts = request.query.limit
+    if (!limitsProducts) {
+        response.send(products)
+    }
+    else
+    {
+        response.send(products.slice(0,limitsProducts))
+    }
+})
+
+app.get('/products/:idProduct', (request,response) => 
+{
+    const id = request.params.idProduct
+    const product = products.find(Element => Element.id == id)
+    if(!product) return response.send(error)
+    response.send(product)
+})
+
+
+
+
+
+app.listen(8080, () => console.log('Server up'));
+
