@@ -1,7 +1,8 @@
 import express from 'express'
-import products from './productos.json' assert {type:'json'}
+import productsRouter from './routers/products.router.js'
 
 const app = express();
+app.use(express.json())
 
 const error = [{error: 'El elemento que quiere acceder no existe!'}]
 
@@ -98,26 +99,9 @@ const error = [{error: 'El elemento que quiere acceder no existe!'}]
 // 	}
 // ]
 
+app.get('/', (req, res) => res.send('Ok'))
 
-app.get('/products', (request,response) => 
-{
-    const limitsProducts = request.query.limit
-    if (!limitsProducts) {
-        response.send(products)
-    }
-    else
-    {
-        response.send(products.slice(0,limitsProducts))
-    }
-})
-
-app.get('/products/:idProduct', (request,response) => 
-{
-    const id = request.params.idProduct
-    const product = products.find(Element => Element.id == id)
-    if(!product) return response.send(error)
-    response.send(product)
-})
+app.use('/products', productsRouter)
 
 
 

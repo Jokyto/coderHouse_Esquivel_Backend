@@ -38,6 +38,7 @@ class ProductManager
     {
         await this.checkFileCreation()
         const product = this.#products.find(element => element.id === id)
+        console.log(product)
         if (!product) return 'Not Found'
         return product
     }
@@ -48,7 +49,30 @@ class ProductManager
     {
         if (!title || !description || !price || !thumbnail || !code || !stock)
             {
-                return this.#error = `[${title}]: Faltan campos`
+                if (!title) 
+                {
+                    return this.#error = `[${title}]: Falta Title`
+                }
+                if (!description) 
+                {
+                    return this.#error = `[${title}]: Falta Description`
+                }
+                if (!price) 
+                {
+                    return this.#error = `[${title}]: Falta Price`
+                }
+                if (!thumbnail) 
+                {
+                    return this.#error = `[${title}]: Falta Thumbnail`
+                }
+                if (!code) 
+                {
+                    return this.#error = `[${title}]: Falta Code`
+                }
+                if (!stock) 
+                {
+                    return this.#error = `[${title}]: Falta Stock`
+                }
             }
         else
             {
@@ -87,15 +111,17 @@ class ProductManager
     {
         const product = await this.getProductsById(id)
         if (product === 'Not Found') 
-        {
-            return this.#error = `[${id}]: No se encontro la ID`
+        {   
+            this.#error = `[${id}]: No se encontro la ID`
+            return console.log(this.#error)
         }
         else
         {
             const index = this.#products.findIndex((element) => element.id === product.id)
-            this.#products[index] = {id: id, ...newProduct}
+            this.#products[index] = {...this.#products[index], ...newProduct}
             await fs.promises.writeFile(this.path, JSON.stringify(this.#products,null,'\t'))
         }
+        console.log(this.#error)
     }
 
     deleteProduct = async(id) =>
@@ -115,41 +141,43 @@ class ProductManager
 
 
 const product = new ProductManager("./productos.json")
-
-const element1 = {title: "Elemento1",description: "Este es el elemento1",price: "200$",thumbnail: "Sin imagen",code:"abc1",stock: "25"}
-const element2 = {title: "Elemento2",description: "Este es el elemento2",price: "250$",thumbnail: "Sin imagen",code:"abc2",stock: "25"}
-const element3 = {title: "Elemento3",description: "Este es el elemento3",price: "300$",thumbnail: "Sin imagen",code:"abc3",stock: "25"}
-const element4 = {title: "Elemento4",description: "Este es el elemento4",price: "350$",thumbnail: "Sin imagen",code:"abc4",stock: "25"}
-const element5 = {title: "Elemento5",description: "Este es el elemento5",price: "400$",thumbnail: "Sin imagen",code:"abc5",stock: "25"}
-const element6 = {title: "Elemento6",description: "Este es el elemento6",price: "450$",thumbnail: "Sin imagen",code:"abc6",stock: "25"}
-const element7 = {title: "Elemento7",description: "Este es el elemento7",price: "500$",thumbnail: "Sin imagen",code:"abc7",stock: "25"}
-const element8 = {title: "Elemento8",description: "Este es el elemento8",price: "550$",thumbnail: "Sin imagen",code:"abc8",stock: "25"}
-const element9 = {title: "Elemento9",description: "Este es el elemento9",price: "600$",thumbnail: "Sin imagen",code:"abc9",stock: "25"}
-const element10 = {title: "Elemento10",description: "Este es el elemento10",price: "650$",thumbnail: "Sin imagen",code:"abc10",stock: "25"}
+export default product
 
 
-await product.addProduct(element1)
+// Pruebas
 
-await product.addProduct(element2)
+// const element1 = {title: "Elemento1",description: "Este es el elemento1",price: "200$",thumbnail: "Sin imagen",code:"abc1",stock: "25"}
+// const element2 = {title: "Elemento2",description: "Este es el elemento2",price: "250$",thumbnail: "Sin imagen",code:"abc2",stock: "25"}
+// const element3 = {title: "Elemento3",description: "Este es el elemento3",price: "300$",thumbnail: "Sin imagen",code:"abc3",stock: "25"}
+// const element4 = {title: "Elemento4",description: "Este es el elemento4",price: "350$",thumbnail: "Sin imagen",code:"abc4",stock: "25"}
+// const element5 = {title: "Elemento5",description: "Este es el elemento5",price: "400$",thumbnail: "Sin imagen",code:"abc5",stock: "25"}
+// const element6 = {title: "Elemento6",description: "Este es el elemento6",price: "450$",thumbnail: "Sin imagen",code:"abc6",stock: "25"}
+// const element7 = {title: "Elemento7",description: "Este es el elemento7",price: "500$",thumbnail: "Sin imagen",code:"abc7",stock: "25"}
+// const element8 = {title: "Elemento8",description: "Este es el elemento8",price: "550$",thumbnail: "Sin imagen",code:"abc8",stock: "25"}
+// const element9 = {title: "Elemento9",description: "Este es el elemento9",price: "600$",thumbnail: "Sin imagen",code:"abc9",stock: "25"}
+// const element10 = {title: "Elemento10",description: "Este es el elemento10",price: "650$",thumbnail: "Sin imagen",code:"abc10",stock: "25"}
 
-await product.addProduct(element3)
+// await product.addProduct(element1)
 
-await product.addProduct(element4)
+// await product.addProduct(element2)
 
-await product.addProduct(element5)
+// await product.addProduct(element3)
 
-await product.addProduct(element6)
+// await product.addProduct(element4)
 
-await product.addProduct(element7)
+// await product.addProduct(element5)
 
-await product.addProduct(element8)
+// await product.addProduct(element6)
 
-await product.addProduct(element9)
+// await product.addProduct(element7)
 
-await product.addProduct(element10)
+// await product.addProduct(element8)
 
-console.log(await product.getProducts())
+// await product.addProduct(element9)
 
+// await product.addProduct(element10)
+
+// console.log(await product.getProducts())
 
 
 // const pruebaDeUpdate = {title: "update",description: "Prueba update",price: "150$",thumbnail: "Sin imagen",code:"UwU",stock: "25"}
