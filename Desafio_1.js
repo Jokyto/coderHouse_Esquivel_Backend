@@ -36,9 +36,8 @@ class ProductManager
 
     getProductsById = async(id) => 
     {
-        await this.checkFileCreation()
-        const product = this.#products.find(element => element.id === id)
-        console.log(product)
+        await this.getProducts()
+        const product = this.#products.find(element => element.id === parseInt(id))
         if (!product) return 'Not Found'
         return product
     }
@@ -133,7 +132,7 @@ class ProductManager
         }
         else
         {
-            const product = this.#products.filter((element) => element.id !== id)
+            const product = this.#products.filter((element) => element.id !== parseInt(id))
             await fs.promises.writeFile(this.path, JSON.stringify(product,null,'\t'))
         }
     }
