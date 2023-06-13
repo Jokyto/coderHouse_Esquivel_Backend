@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { constrainedMemory } from 'process';
+
 
 class CartsManager
 {
@@ -23,7 +23,7 @@ class CartsManager
         }
         catch(err)
         {
-            this.path = './carts.json'
+            this.path = './src/data/carts.json'
             await fs.promises.writeFile(this.path,JSON.stringify(this.#carts,null,'\t'))
             console.log(`El archivo ${this.path} no esta creado. No hay carrito, nuevo carrito creado.`)
         }
@@ -121,5 +121,5 @@ class CartsManager
 }
 
 
-const cart = new CartsManager("./carts.json")
+const cart = new CartsManager("./src/data/carts.json")
 export default cart

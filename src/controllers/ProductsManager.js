@@ -22,7 +22,7 @@ class ProductManager
         }
         catch(err)
         {
-            this.path = './productos.json'
+            this.path = './src/data/productos.json'
             await fs.promises.writeFile(this.path,JSON.stringify(this.#products,null,'\t'))
             console.log(`El archivo ${this.path} no esta creado.`)
         }
@@ -139,7 +139,7 @@ class ProductManager
 }
 
 
-const product = new ProductManager("./productos.json")
+const product = new ProductManager("./src/data/productos.json")
 export default product
 
 

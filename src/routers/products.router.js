@@ -1,6 +1,6 @@
 import { Router } from "express";
-import products from '../../productos.json' assert {type:'json'}
-import productManagement from "../../Desafio_1.js";
+import products from '../data/productos.json' assert {type:'json'}
+import productManagement from "../controllers/ProductsManager.js";
 
 const router = Router()
 
