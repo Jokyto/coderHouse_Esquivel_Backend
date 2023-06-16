@@ -97,23 +97,5 @@
 		"thumbnail": "Sin imagen",
 		"code": "abc11",
 		"stock": "25"
-	},
-	{
-		"id": 12,
-		"title": "Elemento12",
-		"description": "Este es el elemento12",
-		"price": "850$",
-		"thumbnail": "Sin imagen",
-		"code": "abc12",
-		"stock": "60"
-	},
-	{
-		"id": 13,
-		"title": "Elemento13",
-		"description": "Este es el elemento13",
-		"price": "8000$",
-		"thumbnail": "Sin imagen",
-		"code": "abc13",
-		"stock": "60"
 	}
 ]

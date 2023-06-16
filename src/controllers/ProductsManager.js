@@ -96,12 +96,12 @@ class ProductManager
             }
             else
             {
-                console.log(this.#error)
+                return this.#error
             }
         }
         catch(error)
         {
-            console.log(`Error: ${error}`)
+            return this.#error
         }
         
     }
@@ -112,15 +112,15 @@ class ProductManager
         if (product === 'Not Found') 
         {   
             this.#error = `[${id}]: No se encontro la ID`
-            return console.log(this.#error)
+            return this.#error
         }
         else
         {
             const index = this.#products.findIndex((element) => element.id === product.id)
             this.#products[index] = {...this.#products[index], ...newProduct}
             await fs.promises.writeFile(this.path, JSON.stringify(this.#products,null,'\t'))
+            return this.#error
         }
-        console.log(this.#error)
     }
 
     deleteProduct = async(id) =>
@@ -134,6 +134,7 @@ class ProductManager
         {
             const product = this.#products.filter((element) => element.id !== parseInt(id))
             await fs.promises.writeFile(this.path, JSON.stringify(product,null,'\t'))
+            return this.#error
         }
     }
 }

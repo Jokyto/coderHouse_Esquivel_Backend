@@ -32,24 +32,44 @@ router.get('/:idProduct', async(request,response) =>
 
 router.post('/', async (req,res) => {
     const {title,description,code,price,stock,thumbnail,category,status} = req.body
-    productManagement.addProduct({title,description,price,thumbnail,code,stock})
-    await res.json({message: 'Producto registrado con éxito!'})
+    const response = await productManagement.addProduct({title,description,price,thumbnail,code,stock})
+    if (typeof response == 'string') {
+        res.status(500).json({message: `No se pudo registrar el producto porque: ${response}`})
+    }
+    else{
+        const products = await productManagement.getProducts()
+        req.io.emit('products', products)
+        res.status(200).json({message: 'Producto registrado con éxito!'})
+    }
+
 })
 
 router.put('/:id',async (req,res) =>{
     const id = req.params.id
-    console.log(`${id}`)
     const data = req.body
     
-    // Queria usar esto y no me funciona T-T
-    await productManagement.updateProduct(parseInt(id),data)
-    res.json({message: `Se actualizo el producto con id = ${id}`})    
+    const response = await productManagement.updateProduct(parseInt(id),data)
+    if (typeof response == 'string') {
+        res.status(404).json({message: `No se encontro el producto con id = ${id}`})
+    }
+    else{
+        const products = await productManagement.getProducts()
+        req.io.emit('products', products)
+        res.status(200).json({message: `Se actualizo el producto con id = ${id}`})    
+    }
 })
 
 router.delete('/:id',async (req,res) =>{
     const id = req.params.id
-    await productManagement.deleteProduct(id)
-    res.json({message: `Se elimino el producto con id = ${id}`})    
+    const response = await productManagement.deleteProduct(id)
+    if (typeof response == 'string') {
+        res.status(404).json({message: `No se encontro el producto con id = ${id}`})   
+    }
+    else{
+        const products = await productManagement.getProducts()
+        req.io.emit('products', products)
+        res.status(200).json({message: `Se elimino el producto con id = ${id}`})    
+    }
 })
 
 export default router
