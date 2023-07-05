@@ -5,13 +5,17 @@ import productsRouter from './routers/products.router.js'
 import cartsRouter from './routers/carts.router.js'
 import viewsRouter from './routers/views.router.js'
 import mongoose from 'mongoose'
+import dotenv from 'dotenv';
 
+
+dotenv.config();
+const uri = process.env.MONGODB_URI;
 const app = express();
 app.use(express.json())
 
 // WebSocket
 try{
-    await mongoose.connect('mongodb+srv://coder:coder@cluster0.9dm5ywl.mongodb.net/ecommerce')
+    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     app.listen(8080, () => console.log('Server up'));
     // const serverHttp = app.listen(8080, () => console.log('Server up'));
     // const io = new Server(serverHttp)
