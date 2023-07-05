@@ -4,19 +4,27 @@ import { Server } from 'socket.io'
 import productsRouter from './routers/products.router.js'
 import cartsRouter from './routers/carts.router.js'
 import viewsRouter from './routers/views.router.js'
+import mongoose from 'mongoose'
 
 const app = express();
 app.use(express.json())
 
 // WebSocket
-const serverHttp = app.listen(8080, () => console.log('Server up'));
-const io = new Server(serverHttp)
+try{
+    await mongoose.connect('mongodb+srv://coder:coder@cluster0.9dm5ywl.mongodb.net/ecommerce')
+    app.listen(8080, () => console.log('Server up'));
+    // const serverHttp = app.listen(8080, () => console.log('Server up'));
+    // const io = new Server(serverHttp)
+}catch(err){
+    console.log(err.message)   
+}
 
-app.set('socketio',io)
-app.use((req,res,next)=>{
-    req.io = io
-    next()
-})
+
+// app.set('socketio',io)
+// app.use((req,res,next)=>{
+//     req.io = io
+//     next()
+// })
 
 // Handlebars
 app.use(express.static('./src/public'))
@@ -35,8 +43,8 @@ app.use('/api/carts', cartsRouter)
 app.use('/products', viewsRouter)
 
 
-io.on('connection', () =>{
-    console.log('Successfully connected with server!')
-})
+// io.on('connection', () =>{
+//     console.log('Successfully connected with server!')
+// })
 
 
