@@ -43,11 +43,10 @@ router.get('/:idProduct', async(req,res) =>
     }catch(err){
         res.status(500).json({status: 'error', error: err})
     }
-
-
 })
 
-router.post('/', async (req,res) => {
+router.post('/', async (req,res) => 
+{
     const product = req.body
     try{
         const result = await productModel.create(product)

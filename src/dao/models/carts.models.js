@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-const cartCollection = 'cart'
+const cartCollection = 'carts'
 
 const cartSchema = new mongoose.Schema({
     id: {type: Number, require: true},
@@ -12,4 +12,5 @@ const cartSchema = new mongoose.Schema({
     ]
 })
 
+mongoose.set('strictQuery', false)
 export const cartModel = mongoose.model(cartCollection, cartSchema)
