@@ -48,6 +48,20 @@ try {
   app.use("/products", viewsRouter);
   app.use("/chat",chatRouter)
 
-  io.on('connection', () =>{
+  io.on('connection', (socket) =>{
       console.log('Successfully connected with server!')
+
+      socket.on("message", async (data) => {
+        try {
+          const newMessage = await messageModel.create(data);
+          const formattedMessage = {
+            _id: newMessage._id,
+            message: newMessage.message,
+            user: newMessage.user,
+          };
+          io.emit("message", formattedMessage); // Emit the message to all connected clients
+        } catch (error) {
+          console.error(error);
+        }
+      });
   })

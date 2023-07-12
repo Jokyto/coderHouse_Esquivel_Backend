@@ -1,3 +1,5 @@
+const socket = io(); // Connect to the Socket.io server
+
 document.addEventListener("DOMContentLoaded", function () {
     const messageInput = document.getElementById("message-input");
     const messageForm = document.getElementById("message-form");
@@ -60,15 +62,13 @@ document.addEventListener("DOMContentLoaded", function () {
           },
           body: JSON.stringify(newMessage),
         });
-  
-        addMessage(newMessage.message, true); // Add message to the chat interface
       } catch (error) {
         console.error(error);
       }
     }
   
     // Function to add a new message to the chat interface
-    function addMessage(text, isSentByUser) {
+    function addMessage(text,user) {
       const messageItem = document.createElement("li");
       messageItem.className = "message"; // Add margin bottom class
   
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
       const cardTitle = document.createElement("h6");
       cardTitle.className = "card-title";
-      cardTitle.innerHTML = `<em>${username}</em>`; // Apply italic style to the username
+      cardTitle.innerHTML = `<em>${user}</em>`; // Apply italic style to the username
   
       const cardText = document.createElement("p");
       cardText.className = "card-text mb-1";
@@ -102,6 +102,14 @@ document.addEventListener("DOMContentLoaded", function () {
       // Scroll to the bottom of the chat body
       messagesList.scrollTop = messagesList.scrollHeight;
     }
+  
+    // Receive new messages from the server using Socket.io
+    socket.on("message", function (data) {
+      const { message, user } = data;
+      addMessage(message, user);
+    });
   });
+  
+  
   
   

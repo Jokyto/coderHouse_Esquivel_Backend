@@ -17,15 +17,16 @@ router.get('/', async (req, res) => {
   }
 });
 
-
 router.post('/', async (req, res) => {
   const { user, message } = req.body;
   try {
     const newMessage = await messageModel.create({ user, message });
     const formattedMessage = {
+      _id: newMessage._id,
       message: newMessage.message,
-      user: newMessage.user === "User"
+      user: newMessage.user
     };
+    req.app.get("socketio").emit("message", formattedMessage); // Emit the message to all connected clients
     res.status(200).json({ status: 'success', payload: formattedMessage });
   } catch (error) {
     res.status(500).json({ status: 'error', error: error.message });
@@ -33,5 +34,6 @@ router.post('/', async (req, res) => {
 });
 
 export default router;
+
 
 
