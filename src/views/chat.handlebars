@@ -1,26 +1,52 @@
+<div class="modal" id="username-modal" tabindex="-1" role="dialog" aria-labelledby="username-modal-label" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="username-modal-label">Enter Your Username</h5>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="username-input" class="form-control" placeholder="Username">
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="username-submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="container">
   <div class="card mt-5">
     <div class="card-header bg-primary text-white">
-      <h2 class="mb-0">Chat</h2>
+      <h2 class="mb-0">ChatBot</h2>
     </div>
     <div class="card-body chat-body">
-      <ul class="list-unstyled messages" id="messages">
-        {{#each messages}}
-          <li class="message {{#if isSentByUser}}user{{else}}other{{/if}}">
-            <div class="card">
-              <div class="card-body">
-                <p class="card-text">{{message}}</p>
-                <span class="timestamp text-muted">{{timestamp}}</span>
-              </div>
-            </div>
-          </li>
-        {{/each}}
-      </ul>
+      <div class="messages-container vh-100" style="max-height: calc(100vh - 250px); overflow-y: auto;">
+        <div class="messages-wrapper me-3">
+          <ul class="list-unstyled messages" id="messages">
+            {{#each messages}}
+              <li class="message {{#if isSentByUser}}user{{else}}other{{/if}}">
+                <div class="card mt-3">
+                  <div class="card-body">
+                    <div class="card-body">
+                      <h6 class="card-title">
+                        <em>{{user}}</em>
+                        <span class="message-id">{{_id}}</span>
+                      </h6>
+                      <p class="card-text">{{message}}</p>
+                      <span class="timestamp text-muted">{{timestamp}}</span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
     </div>
     <div class="card-footer">
       <form id="message-form">
         <div class="input-group">
-          <input type="text" id="message-input" class="form-control" placeholder="Type a message...">
+          <input type="text" id="message-input" class="form-control me-4" placeholder="Type a message...">
           <div class="input-group-append">
             <button type="submit" class="btn btn-primary">Send</button>
           </div>
@@ -30,90 +56,8 @@
   </div>
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const messageInput = document.getElementById("message-input");
-    const messageForm = document.getElementById("message-form");
-    const messagesList = document.getElementById("messages");
+<script src="/chat.js"></script>
 
-    // Submit form on enter key press
-    messageInput.addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        messageForm.dispatchEvent(new Event("submit"));
-      }
-    });
 
-    // Handle form submission
-    messageForm.addEventListener("submit", function(event) {
-      event.preventDefault();
-      const message = messageInput.value.trim();
-      if (message) {
-        addMessageToDB(message, true); // Add user's message to MongoDB
-        messageInput.value = ""; // Clear input field
-        // Perform any necessary processing or send the message to the server
-      }
-    });
 
-    async function addMessageToDB(message, isSentByUser) {
-  const newMessage = {
-    user: isSentByUser ? "User" : "Other",
-    message: message
-  };
 
-  try {
-    await fetch("/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(newMessage)
-    });
-
-    addMessage(newMessage.message, isSentByUser); // Add message to the chat interface
-  } catch (error) {
-    console.error(error);
-  }
-}
-    // Function to add a new message to the chat interface
-    function addMessage(text, isSentByUser) {
-      const messageItem = document.createElement("li");
-      messageItem.className = "message";
-      if (isSentByUser) {
-        messageItem.classList.add("user");
-      } else {
-        messageItem.classList.add("other");
-      }
-
-      const card = document.createElement("div");
-      card.className = "card";
-
-      const cardBody = document.createElement("div");
-      cardBody.className = "card-body";
-
-      const cardText = document.createElement("p");
-      cardText.className = "card-text";
-      cardText.textContent = text;
-
-      const timestamp = document.createElement("span");
-      timestamp.className = "timestamp text-muted";
-      timestamp.textContent = new Date().toLocaleTimeString();
-
-      cardBody.appendChild(cardText);
-      cardBody.appendChild(timestamp);
-      card.appendChild(cardBody);
-      messageItem.appendChild(card);
-
-      // Remove the placeholder if it exists
-      const placeholder = messagesList.querySelector(".message-placeholder");
-      if (placeholder) {
-        placeholder.remove();
-      }
-
-      messagesList.appendChild(messageItem);
-
-      // Scroll to the bottom of the chat body
-      messagesList.scrollTop = messagesList.scrollHeight;
-    }
-  });
-</script>

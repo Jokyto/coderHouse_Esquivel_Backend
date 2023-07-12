@@ -7,14 +7,16 @@ router.get('/', async (req, res) => {
   try {
     const messages = await messageModel.find();
     const formattedMessages = messages.map(message => ({
+      _id: message._id, // Include the _id field
       message: message.message,
-      user: message.user === "User"
+      user: message.user
     }));
     res.render('chat', { messages: formattedMessages });
   } catch (error) {
     res.status(500).json({ status: 'error', error: error.message });
   }
 });
+
 
 router.post('/', async (req, res) => {
   const { user, message } = req.body;

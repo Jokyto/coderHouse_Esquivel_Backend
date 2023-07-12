@@ -7,4 +7,6 @@ const messageSchema = new mongoose.Schema({
     message: {type: String, require: true}
 })
 
+mongoose.set('strictQuery', false)
+
 export const messageModel = mongoose.model(messageCollection, messageSchema)
