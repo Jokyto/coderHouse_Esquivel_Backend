@@ -5,6 +5,7 @@ import productsRouter from "./routers/products.router.js";
 import cartsRouter from "./routers/carts.router.js";
 import viewsRouter from "./routers/views.router.js";
 import chatRouter from "./routers/chat.router.js"
+import inCartRouter from "./routers/inCart.router.js"
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
@@ -20,10 +21,11 @@ try {
         useUnifiedTopology: true,
     });
     console.log("Connected to database.");
-} catch (err) {
+} 
+catch (err) {
     console.log(err.message);
 }
-    const serverHttp = app.listen(8080, () => console.log("Server up"));
+  const serverHttp = app.listen(8080, () => console.log("Server up"));
   const io = new Server(serverHttp);
 
   app.set("socketio", io);
@@ -47,6 +49,7 @@ try {
   app.use("/api/carts", cartsRouter);
   app.use("/products", viewsRouter);
   app.use("/chat",chatRouter)
+  app.use("/carts", inCartRouter)
 
   io.on('connection', (socket) =>{
       console.log('Successfully connected with server!')
@@ -64,4 +67,12 @@ try {
           console.error(error);
         }
       });
+      
+      // socket.on("products", async(data) =>{
+      //   try{
+      //     io.emit("products", data )
+      //   }catch(error){
+      //     console.error(error)
+      //   }
+      // })
   })

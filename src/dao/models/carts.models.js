@@ -3,14 +3,23 @@ import mongoose from "mongoose"
 const cartCollection = 'carts'
 
 const cartSchema = new mongoose.Schema({
-    id: {type: Number, require: true},
-    products: [
-        {
-            productID: {type: Number, require: true},
-            quantity: {type: Number, require: true}
-        }
-    ]
+    products: {
+        type: [{
+            _id: false,
+            productID: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'products'
+            },
+            quantity: Number
+        }],
+        default: []
+    }
 })
 
+
+//middleware del mongoose con populate
+cartSchema.pre('findOne',function(){
+    this.populate('products.productID')
+})
 mongoose.set('strictQuery', false)
 export const cartModel = mongoose.model(cartCollection, cartSchema)

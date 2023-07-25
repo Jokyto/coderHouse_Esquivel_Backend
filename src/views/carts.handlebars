@@ -1,0 +1,38 @@
+<div class="justify-content-center">
+    <h1 class="text-center">ID del carrito: {{title}}</h1>
+    <hr />
+    <table class="table table-dark table-hover table-striped">
+        <thead>
+            <tr>
+                <td><strong>Producto</strong></td>
+                <td><strong>Descripción</strong></td>
+                <td><strong>Precio</strong></td>
+                <td><strong>Código</strong></td>
+                <td><strong>Categoria</strong></td>
+                <td><strong>Cantidad</strong></td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each products}}
+                <tr>
+                    <td>{{this.productID.title}}</td>
+                    <td>{{this.productID.description}}</td>
+                    <td>{{this.productID.price}}</td>
+                    <td>{{this.productID.code}}</td>
+                    <td>{{this.productID.category}}</td>
+                    <td>{{this.quantity}}</td>
+                    <td>
+                        <form id="deleteForm_{{this.productID._id}}" method="POST" onsubmit="deleteProduct('{{../title}}', '{{this.productID._id}}'); return false;">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger">Borrar</button>
+                        </form>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="/index.js"></script>

@@ -14,7 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!localStorage.getItem("username")) {
       usernameModal.classList.add("show");
       usernameModal.style.display = "block";
-    } else {
+    } 
+    else {
       username = localStorage.getItem("username");
     }
   

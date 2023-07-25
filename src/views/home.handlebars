@@ -1,26 +1,44 @@
-<h1>Products</h1>
-<hr />
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <td><strong>Producto</strong></td>
-            <td><strong>Descripción</strong></td>
-            <td><strong>Precio</strong></td>
-            <td><strong>Código</strong></td>
-            <td><strong>Stock</strong></td>
-            <td><strong>Categoria</strong></td>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each products}}
+<div class="justify-content-center">
+    <h1 class="text-center">{{title}}</h1>
+    <hr />
+    <table class="table table-dark table-hover table-striped">
+        <thead>
             <tr>
-                <td>{{this.title}}</td>
-                <td>{{this.description}}</td>
-                <td>{{this.price}}</td>
-                <td>{{this.code}}</td>
-                <td>{{this.stock}}</td>
-                <td>{{this.thumbnail}}</td>
+                <td><strong>Producto</strong></td>
+                <td><strong>Descripción</strong></td>
+                <td><strong>Precio</strong></td>
+                <td><strong>Código</strong></td>
+                <td><strong>Stock</strong></td>
+                <td><strong>Categoria</strong></td>
+                <td></td>
             </tr>
-        {{/each}}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {{#each products.docs}}
+                <tr>
+                    <td>{{this.title}}</td>
+                    <td>{{this.description}}</td>
+                    <td>{{this.price}}</td>
+                    <td>{{this.code}}</td>
+                    <td>{{this.stock}}</td>
+                    <td>{{this.thumbnail}}</td>
+                    <td>
+                        <button class="btn btn-success" onclick="addToCart('{{this._id}}')">Add to Cart</button>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+        {{#if products.hasPrevPage}}
+            <a class="me-2 btn btn-primary" href="{{products.prevLink}}" role="button">Anterior</a>
+        {{/if}}
+        {{#if products.hasNextPage}}
+            <a class="ms-2 btn btn-primary" href="{{products.nextLink}}" role="button">Siguiente</a>
+        {{/if}}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="/index.js"></script>
+

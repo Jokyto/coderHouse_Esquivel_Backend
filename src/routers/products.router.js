@@ -14,6 +14,7 @@ router.get('/', async(req,res) =>
     }catch(err){
         res.status(500).json({status:'error',error: err})
     }
+    
     // const limitsProducts = request.query.limit
     // if (!limitsProducts) {
     //     response.status(200).send(products)
@@ -56,6 +57,7 @@ router.post('/', async (req, res) => {
       const result = await productModel.create(newProduct);
       
       const products = await productModel.find();
+      
       req.io.emit('products', products);
       
       res.status(200).json({
