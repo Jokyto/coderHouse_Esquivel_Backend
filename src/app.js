@@ -64,7 +64,7 @@ catch (err) {
 
   // Router
 
-  app.get("/", (req, res) => res.render("index"));
+  app.get("/", (req, res) => res.render("login"));
   app.get("/health", (req, res) => res.send("Ok"));
 
   app.use("/api/products", productsRouter);
