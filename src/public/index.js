@@ -51,14 +51,13 @@ function addProduct() {
     product[key] = value;
   });
 
-  // Check if any field is empty
   if (Object.values(product).some(field => field.trim() === '')) {
     Swal.fire({
       icon: 'error',
       title: 'Missing Fields',
       text: 'Please fill in all the fields.',
     });
-    return; // Stop the function execution
+    return;
   }
 
   fetch('/api/products', {
@@ -169,5 +168,67 @@ function addToCart(productId) {
           text: 'An error occurred while processing the request.',
       });
   });
+}
+
+//Register
+
+document.getElementById('registerUser').addEventListener('submit', event => {
+  event.preventDefault();
+  addUser();
+});
+
+function closeModal() {
+  const modalElement = document.getElementById('addProductModal');
+  const modalInstance = bootstrap.Modal.getInstance(modalElement);
+  modalInstance.hide();
+}
+
+function addUser() {
+  const form = document.getElementById('addProductForm');
+  const formData = new FormData(form);
+
+  const product = {};
+  formData.forEach((value, key) => {
+    product[key] = value;
+  });
+
+  if (Object.values(product).some(field => field.trim() === '')) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Missing Fields',
+      text: 'Please fill in all the fields.',
+    });
+    return;
+  }
+
+  fetch('/api/products', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(product),
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Product Added',
+          text: 'The product has been added successfully!',
+        }).then(() => {
+          closeModal(); // Close the modal after the SweetAlert is dismissed
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed to Add Product',
+          text: data.message || 'An error occurred while adding the product.',
+        });
+      }
+    })
+    .catch(error => {
+      console.error('An error occurred:', error);
+    });
 }
 

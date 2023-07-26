@@ -1,4 +1,5 @@
 import express from "express";
+import session from 'express-session'
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
 import productsRouter from "./routers/products.router.js";
@@ -6,13 +7,32 @@ import cartsRouter from "./routers/carts.router.js";
 import viewsRouter from "./routers/views.router.js";
 import chatRouter from "./routers/chat.router.js"
 import inCartRouter from "./routers/inCart.router.js"
+import registerRouter from "./routers/register.router.js"
+import loginRouter from "./routers/login.router.js"
 import mongoose from "mongoose";
+import MongoStore from 'connect-mongo'
 import dotenv from "dotenv";
 
 dotenv.config();
 const uri = process.env.MONGODB_URI;
 const app = express();
 app.use(express.json());
+
+//Session
+app.use(session({
+  store: MongoStore.create({
+      mongoUrl: uri,
+      dbName: 'ecommerce',
+      mongoOptions: {
+          useNewUrlParser: true,
+          useUnifiedTopology: true
+      }
+  }),
+  secret: process.env.SECRET,
+  resave: true,
+  saveUninitialized: true
+}))
+
 
 // WebSocket
 try {
@@ -42,6 +62,8 @@ catch (err) {
 
   const error = [{ error: "El elemento que quiere acceder no existe!" }];
 
+  // Router
+
   app.get("/", (req, res) => res.render("index"));
   app.get("/health", (req, res) => res.send("Ok"));
 
@@ -50,6 +72,8 @@ catch (err) {
   app.use("/products", viewsRouter);
   app.use("/chat",chatRouter)
   app.use("/carts", inCartRouter)
+  app.use("/register", registerRouter)
+  app.use("/login", loginRouter)
 
   io.on('connection', (socket) =>{
       console.log('Successfully connected with server!')
