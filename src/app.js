@@ -33,6 +33,10 @@ app.use(session({
   saveUninitialized: true
 }))
 
+const auth = (req, res, next) => {
+  if (req.session?.user) return next()
+  return res.status(401).json({status: 'fail', message: 'Auth error'})
+}
 
 // WebSocket
 try {
