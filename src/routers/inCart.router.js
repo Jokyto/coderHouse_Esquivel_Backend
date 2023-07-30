@@ -3,7 +3,16 @@ import { cartModel } from "../dao/models/carts.models.js";
 
 const router = Router();
 
-router.get('/:cid', async (req, res) => {
+const auth = (req, res, next) => {
+  if (req.session?.user) {
+    return next();
+  } else {
+    return res.redirect('/login');
+  }
+};
+
+
+router.get('/:cid', auth,async (req, res) => {
     try {
       const id = req.params.cid;
       const result = await cartModel.findOne({ '_id': id }).populate('products.productID').lean().exec();;
@@ -13,7 +22,8 @@ router.get('/:cid', async (req, res) => {
 
       res.status(200).render('carts', {
         title: result._id,
-        products: result.products
+        products: result.products,
+        session: req.session
       });
     } catch (err) {
       res.status(500).json({ status: 'error', error: err.message });

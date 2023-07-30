@@ -41,8 +41,29 @@ function logoutUser() {
 }
 
 function loginUser(){
+  const form = document.getElementById('LookForUser');
+  const formData = new FormData(form);
+
+  const user = {};
+  formData.forEach((value, key) => {
+    user[key] = value;
+  });
+
+  if (Object.values(user).some(field => field.trim() === '')) 
+  {
+    Swal.fire({
+      icon: 'error',
+      title: 'Missing Fields',
+      text: 'Por favor rellene todos los campos!.',
+    });
+    return;
+  }
   fetch('/login', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user),
   })
     .then(response => {
       if (response.ok) {
@@ -58,7 +79,7 @@ function loginUser(){
           title: 'Login exitoso!',
           text: 'Se a podido acceder a su cuenta con exito!.',
         }).then(() => {
-          window.location.href = '/api/products';
+          window.location.href = '/products';
         });
       } else {
         throw new Error('Login Error');

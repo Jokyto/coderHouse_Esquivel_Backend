@@ -3,7 +3,16 @@ import { messageModel } from "../dao/models/messages.models.js";
 
 const router = Router();
 
-router.get('/', async (req, res) => {
+const auth = (req, res, next) => {
+  if (req.session?.user) {
+    return next();
+  } else {
+    return res.redirect('/login');
+  }
+};
+
+
+router.get('/', auth,async (req, res) => {
   try {
     const messages = await messageModel.find();
     const formattedMessages = messages.map(message => ({
@@ -11,7 +20,11 @@ router.get('/', async (req, res) => {
       message: message.message,
       user: message.user
     }));
-    res.render('chat', { messages: formattedMessages });
+    res.render('chat', { 
+      tittle: 'Chat',
+      messages: formattedMessages,
+      session: req.session 
+    });
   } catch (error) {
     res.status(500).json({ status: 'error', error: error.message });
   }

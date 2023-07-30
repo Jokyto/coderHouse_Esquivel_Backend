@@ -1,10 +1,19 @@
 import { Router } from "express";
 import { productModel } from "../dao/models/products.models.js";
-import { cartModel } from "../dao/models/carts.models.js";
+import session from "express-session";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+const auth = (req, res, next) => {
+  if (req.session?.user) {
+    return next();
+  } else {
+    return res.redirect('/login');
+  }
+};
+
+
+router.get("/", auth,async (req, res) => {
   let page = parseInt(req.query.page) || 1
   let limit = parseInt(req.query.limit) || 10
   let sort = parseInt(req.query.sort) == 1 ? 1 : (parseInt(req.query.sort) == -1 ? -1 : 0)
@@ -16,21 +25,23 @@ router.get("/", async (req, res) => {
 
     res.status(200).render('home', {
       title: "Products",
-      products: products
+      products: products,
+      session: req.session
     });
   } catch (error) {
     res.status(404).json({ status: 'error', error: error });
   }
 });
 
-router.get("/realtimeproducts", async (req, res) => {
+router.get("/realtimeproducts", auth,async (req, res) => {
   try {
     const products = await productModel.find()
     const formattedProducts = formatProducts(products);
 
     res.render('RealTimeProducts', {
       title: 'Real Time Products',
-      products: formattedProducts
+      products: formattedProducts,
+      session: req.session
     });
   } catch (error) {
     res.status(404).json({ status: 'error', error: error });

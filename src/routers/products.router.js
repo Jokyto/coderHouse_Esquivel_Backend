@@ -6,7 +6,15 @@ import { productModel } from "../dao/models/products.models.js"
 
 const router = Router()
 
-router.get('/', async(req,res) => 
+const auth = (req, res, next) => {
+    if (req.session?.user) {
+      return next();
+    } else {
+      return res.redirect('/login');
+    }
+  };
+  
+router.get('/', auth ,async(req,res) => 
 {
     try{
         const products = await productModel.find()
@@ -25,7 +33,7 @@ router.get('/', async(req,res) =>
     // }
 })
 
-router.get('/:idProduct', async(req,res) => 
+router.get('/:idProduct', auth ,async(req,res) => 
 {
     // const id = request.params.idProduct
     // const product = products.find(Element => Element.id == id)

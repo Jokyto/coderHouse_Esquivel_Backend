@@ -3,9 +3,17 @@ import { cartModel } from "../dao/models/carts.models.js";
 // import cartManagment from "../dao/controllers/CartsManager.js"
 
 const router = Router();
+const auth = (req, res, next) => {
+  if (req.session?.user) {
+    return next();
+  } else {
+    return res.redirect('/login');
+  }
+};
+
 
 //endpoint para leer todos los carritos
-router.get('/', async(req,res) => 
+router.get('/', auth, async(req,res) => 
 {
     try{
         const carts = await cartModel.find()

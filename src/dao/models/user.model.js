@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-const userCollection = 'sessions'
+const userCollection = 'users'
 
 const userSchema = new mongoose.Schema(
     {

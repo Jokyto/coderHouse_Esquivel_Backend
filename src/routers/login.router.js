@@ -1,6 +1,5 @@
-import { Router, json } from "express"
+import { Router} from "express"
 import { userModel } from "../dao/models/user.model.js"
-
 
 const router = Router()
 
@@ -9,27 +8,40 @@ router.get('/', async(req,res)=>{
 })
 
 router.post('/', async (req, res) => {
-  const sessionData = req.session;
+  const user = req.body;
 
   try {
-    const user = sessionData.user;
-    console.log(typeof(user.email))
-    
+
     const userInDb = await userModel.findOne({ email: user.email });
     
     if (userInDb && userInDb.password === user.password) {
+      req.session.user = {
+        first_name: userInDb.first_name,
+        rol: userInDb.rol
+      }
 
-      res.status(200).json({ status: 'success', message: 'Login successful' });
+      res.status(200).json({ status: 'success', message: 'Login successful'});
       
     } 
     else {
-      res.status(404).json({ status: 'error', message: 'User not found or incorrect credentials' });
+      res.status(404).json({ status: 'error', message: 'El usuario y/o contraseña son incorrectos.' });
       
     }
-  } catch (err) {
+  } 
+  catch (err) {
     
     res.status(500).json({ status: 'error', message: 'Error occurred', error: err });
   }
+});
+
+router.get('/out', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      return res.status(500).send('Error occurred');
+    } else {
+      return res.redirect('/login');
+    }
+  });
 });
 
 export default router;

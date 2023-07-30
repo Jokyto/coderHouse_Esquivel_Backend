@@ -33,44 +33,40 @@ app.use(session({
   saveUninitialized: true
 }))
 
-const auth = (req, res, next) => {
-  if (req.session?.user) return next()
-  return res.status(401).json({status: 'fail', message: 'Auth error'})
-}
 
 // WebSocket
 try {
     await mongoose.connect(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
     console.log("Connected to database.");
-} 
-catch (err) {
+  } 
+  catch (err) {
     console.log(err.message);
-}
+  }
   const serverHttp = app.listen(8080, () => console.log("Server up"));
   const io = new Server(serverHttp);
-
+  
   app.set("socketio", io);
   app.use((req, res, next) => {
     req.io = io;
     next();
   });
-
+  
   // Handlebars
   app.use(express.static("./src/public"));
   app.engine("handlebars", handlebars.engine());
   app.set("views", "./src/views");
   app.set("view engine", "handlebars");
-
+  
   const error = [{ error: "El elemento que quiere acceder no existe!" }];
-
+  
   // Router
-
+  
   app.get("/", (req, res) => res.render("login"));
   app.get("/health", (req, res) => res.send("Ok"));
-
+  
   app.use("/api/products", productsRouter);
   app.use("/api/carts", cartsRouter);
   app.use("/products", viewsRouter);
@@ -78,29 +74,31 @@ catch (err) {
   app.use("/carts", inCartRouter)
   app.use("/register", registerRouter)
   app.use("/login", loginRouter)
-
+  
+  
   io.on('connection', (socket) =>{
-      console.log('Successfully connected with server!')
-
-      socket.on("message", async (data) => {
-        try {
-          const newMessage = await messageModel.create(data);
-          const formattedMessage = {
-            _id: newMessage._id,
-            message: newMessage.message,
-            user: newMessage.user,
-          };
-          io.emit("message", formattedMessage); // Emit the message to all connected clients
-        } catch (error) {
-          console.error(error);
-        }
-      });
-      
-      // socket.on("products", async(data) =>{
+    console.log('Successfully connected with server!')
+    
+    socket.on("message", async (data) => {
+      try {
+        const newMessage = await messageModel.create(data);
+        const formattedMessage = {
+          _id: newMessage._id,
+          message: newMessage.message,
+          user: newMessage.user,
+        };
+        io.emit("message", formattedMessage); // Emit the message to all connected clients
+      } catch (error) {
+        console.error(error);
+      }
+    });
+    
+    // socket.on("products", async(data) =>{
       //   try{
-      //     io.emit("products", data )
-      //   }catch(error){
-      //     console.error(error)
-      //   }
-      // })
-  })
+        //     io.emit("products", data )
+        //   }catch(error){
+          //     console.error(error)
+          //   }
+          // })
+})
+        
