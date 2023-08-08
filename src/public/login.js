@@ -1,6 +1,6 @@
-document.getElementById('logoutButton').addEventListener('click', () => {
-  logoutUser();
-});
+// document.getElementById('logoutButton').addEventListener('click', () => {
+//   logoutUser();
+// });
 
 document.getElementById('loginButton').addEventListener('click', () => {
   loginUser();

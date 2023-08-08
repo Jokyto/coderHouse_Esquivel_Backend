@@ -15,7 +15,7 @@ import dotenv from "dotenv";
 import bcrypt from "bcrypt"
 import passport from "passport";
 import intializePassport from "./config/passport.config.js";
-
+import sessionRouter from "./routers/session.router.js"
 
 //Hashear contraseña
 export const createHash = password =>{
@@ -93,8 +93,10 @@ try {
   app.use("/carts", inCartRouter)
   app.use("/register", registerRouter)
   app.use("/login", loginRouter)
-  
-  
+  app.use("/api/session", sessionRouter)  
+
+
+
   io.on('connection', (socket) =>{
     console.log('Successfully connected with server!')
     

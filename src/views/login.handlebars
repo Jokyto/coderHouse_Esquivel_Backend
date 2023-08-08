@@ -13,7 +13,10 @@
             </div>
             <div class="d-flex justify-content-between">
                 <button type="button" id="loginButton" class="btn btn-primary">Login</button>
-                <button type="button" id="logoutButton" class="btn btn-danger">Logout</button>
+                {{!-- <button type="button" id="logoutButton" class="btn btn-danger">Logout</button> --}}
+                <a href="/api/session/github" class="btn btn-dark">
+                    <i class="fab fa-github"></i> GitHub Login
+                </a>
                 <a href="/register" class="btn btn-secondary">Register</a>
             </div>
         </form>
