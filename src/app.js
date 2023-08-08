@@ -12,6 +12,21 @@ import loginRouter from "./routers/login.router.js"
 import mongoose from "mongoose";
 import MongoStore from 'connect-mongo'
 import dotenv from "dotenv";
+import bcrypt from "bcrypt"
+import passport from "passport";
+import intializePassport from "./config/passport.config.js";
+
+
+//Hashear contraseña
+export const createHash = password =>{
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+}
+
+export const isValidPassword = (user, password) => {
+  return bcrypt.compareSync(password, user.password)
+}
+
+//Variables de entorno
 
 dotenv.config();
 const uri = process.env.MONGODB_URI;
@@ -33,6 +48,10 @@ app.use(session({
   saveUninitialized: true
 }))
 
+//Passport
+intializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 // WebSocket
 try {
