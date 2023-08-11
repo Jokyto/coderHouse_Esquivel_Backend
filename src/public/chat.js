@@ -51,7 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Fetching messages
     async function addMessageToDB(message) {
       const newMessage = {
-        user: username,
         message: message,
       };
   

@@ -31,7 +31,8 @@ router.get('/', auth,async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { user, message } = req.body;
+  const { message } = req.body;
+  const user = req.session.user.first_name;
   try {
     const newMessage = await messageModel.create({ user, message });
     const formattedMessage = {

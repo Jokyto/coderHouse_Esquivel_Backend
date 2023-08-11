@@ -37,7 +37,9 @@ router.post('/', passport.authenticate('login',{failureRedirect: '/login/fail'})
   //   res.status(500).json({ status: 'error', message: 'Error occurred', error: err });
   // }
 
+  req.session.user = req.user
   res.status(200).json({ status: 'success', message: 'Login successful'})
+  // res.status(200).json({ status: 'success', message: 'Login successful'})
 });
 
 router.get('/out', (req, res) => {
