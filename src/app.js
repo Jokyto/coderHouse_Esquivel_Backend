@@ -1,21 +1,28 @@
+// Express
 import express from "express";
 import session from 'express-session'
 import handlebars from "express-handlebars";
+// Socket io
 import { Server } from "socket.io";
+// Routers
 import productsRouter from "./routers/products.router.js";
 import cartsRouter from "./routers/carts.router.js";
 import viewsRouter from "./routers/views.router.js";
 import chatRouter from "./routers/chat.router.js"
-import inCartRouter from "./routers/inCart.router.js"
-import registerRouter from "./routers/register.router.js"
-import loginRouter from "./routers/login.router.js"
+import sessionRouter from "./routers/session.router.js"
+// mongoDb
 import mongoose from "mongoose";
 import MongoStore from 'connect-mongo'
-import dotenv from "dotenv";
+// Hashear contraseña
 import bcrypt from "bcrypt"
+// Passport
 import passport from "passport";
+// Configuration files
 import intializePassport from "./config/passport.config.js";
-import sessionRouter from "./routers/session.router.js"
+import config from "./config/config.js";
+// Command
+import { Command } from "commander";
+
 
 //Hashear contraseña
 export const createHash = password =>{
@@ -27,9 +34,11 @@ export const isValidPassword = (user, password) => {
 }
 
 //Variables de entorno
+const defaultPort = config.defaultPort;
+const uri = config.uri;
+const secret = config.secret;
 
-dotenv.config();
-const uri = process.env.MONGODB_URI;
+// Express
 const app = express();
 app.use(express.json());
 
@@ -43,10 +52,18 @@ app.use(session({
           useUnifiedTopology: true
       }
   }),
-  secret: process.env.SECRET,
+  secret: secret,
   resave: true,
   saveUninitialized: true
 }))
+
+// In order to accept request outside server domain
+// app.use((req,res,next) => {
+//   res.set('Access-Control-Allow-Origin', '*')
+//   next()
+// })
+// Or install cors library
+// app.use(cors())
 
 //Passport
 intializePassport()
@@ -64,7 +81,15 @@ try {
   catch (err) {
     console.log(err.message);
   }
-  const serverHttp = app.listen(8080, () => console.log("Server up"));
+
+// Command for port definition in inline terminal
+  const program = new Command()
+  program.option('-p <port>', 'Server port!', defaultPort)
+  program.parse()
+  const port = program.opts().p
+  const serverHttp = app.listen(port, () => console.log(`Server up on port ${port}`));
+
+// Socket IO
   const io = new Server(serverHttp);
   
   app.set("socketio", io);
@@ -73,7 +98,7 @@ try {
     next();
   });
   
-  // Handlebars
+// Handlebars
   app.use(express.static("./src/public"));
   app.engine("handlebars", handlebars.engine());
   app.set("views", "./src/views");
@@ -82,7 +107,7 @@ try {
   const error = [{ error: "El elemento que quiere acceder no existe!" }];
   
   // Router
-  
+
   app.get("/", (req, res) => res.render("login"));
   app.get("/health", (req, res) => res.send("Ok"));
   
@@ -90,13 +115,10 @@ try {
   app.use("/api/carts", cartsRouter);
   app.use("/products", viewsRouter);
   app.use("/chat",chatRouter)
-  app.use("/carts", inCartRouter)
-  app.use("/register", registerRouter)
-  app.use("/login", loginRouter)
   app.use("/api/session", sessionRouter)  
 
 
-
+// Socket connections
   io.on('connection', (socket) =>{
     console.log('Successfully connected with server!')
     

@@ -1,13 +1,9 @@
-// document.getElementById('logoutButton').addEventListener('click', () => {
-//   logoutUser();
-// });
-
 document.getElementById('loginButton').addEventListener('click', () => {
   loginUser();
 });
 
 function logoutUser() {
-    fetch('/login/out', {
+    fetch('/api/session/login/out', {
       method: 'GET',
     })
       .then(response => {
@@ -24,7 +20,7 @@ function logoutUser() {
             title: 'Logout Successful!',
             text: 'You have been logged out successfully.',
           }).then(() => {
-            window.location.href = '/login';
+            window.location.href = '/api/session/login';
           });
         } else {
           throw new Error('Logout Error');
@@ -58,7 +54,7 @@ function loginUser(){
     });
     return;
   }
-  fetch('/login', {
+  fetch('/api/session/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

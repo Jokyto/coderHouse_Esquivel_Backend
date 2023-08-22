@@ -18,9 +18,6 @@
             </button>
             <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
-                    {{!-- <li class="nav-item">
-                        <a class="nav-link" href="/">Inicio</a>
-                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link" href="/products">Productos</a>
                     </li>
@@ -28,7 +25,11 @@
                         <a class="nav-link" href="/products/realtimeproducts">Productos en tiempo real</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/carts/{{session.user.cart}}">Carrito</a>
+                        {{#if session.user}}
+                        <a class="nav-link" href="/api/carts/{{session.user.cart}}">Carrito</a>
+                        {{else}}
+                        <a class="nav-link" href="/api/session/login">Carrito</a>
+                        {{/if}}
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/chat">Chat</a>
@@ -38,14 +39,12 @@
             <div class="d-flex align-items-center">
                 {{#if session.user}}
                     <span class="text-light me-3">Bienvenido, {{session.user.first_name}} | Role: {{session.user.rol}}</span>
-                    <a href="/login/out" class="btn btn-primary">Log out</a>
+                    <a href="/api/session/login/out" class="btn btn-primary">Log out</a>
                 {{else}}
                     <span class="text-light me-3">No esta logeado</span>
-                    <a href="/login" class="btn btn-primary">Log in</a>
+                    <a href="/api/session/login" class="btn btn-primary">Log in</a>
                 {{/if}}
-            </div>
-            {{!-- <a href="/login"><iconify-icon icon="fa:sign-in"></iconify-icon></a> --}}
-                
+            </div>                
         </div>
     </nav>
 

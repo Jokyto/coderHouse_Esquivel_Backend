@@ -3,7 +3,7 @@
 document.getElementById('registerUser').addEventListener('submit', event => {
     event.preventDefault();
     addUser();
-  });
+});
   
 function addUser() {
   const form = document.getElementById('registerUser');
@@ -26,7 +26,7 @@ function addUser() {
     return;
   }
 
-  fetch('/register', {
+  fetch('/api/session/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -43,9 +43,10 @@ function addUser() {
           title: 'Registrado!',
           text: 'Se registro con exito!',
         }).then(() => {
-          window.location.href = '/login';
+          window.location.href = '/api/session/login';
         });
-      } else {
+      } 
+      else {
         Swal.fire({
           icon: 'error',
           title: 'Error en el registro',

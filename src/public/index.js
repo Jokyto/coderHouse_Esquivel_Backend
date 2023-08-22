@@ -1,5 +1,4 @@
 //Cart deleting products
-
 function deleteProduct(cartID, productID) {
     Swal.fire({
         title: 'Confirmar eliminación',
@@ -43,11 +42,9 @@ function deleteProduct(cartID, productID) {
     });
 }
 
-
 //Agregar al carrito
 function addToCart(productId) {
-  const cartId = "64bf2ff9a1878003e2983063";
-  fetch(`/api/carts/${cartId}/product/${productId}`, {
+  fetch(`/api/carts/cid/product/${productId}`, {
       method: 'POST',
   })
   .then(response => response.json())
