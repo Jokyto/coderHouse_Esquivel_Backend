@@ -1,3 +1,14 @@
+import UserDTO from "../dto/user.dto";
+
+// Authentication
+export const auth = (req, res, next) => {
+  if (req.session?.user) {
+    return next();
+  } else {
+    return res.redirect('/api/session/login');
+  }
+};
+
 // Register
 
 export const registerViewController = async (req, res) => {
@@ -59,11 +70,9 @@ export const githubCallbackController = async(req,res) => {
     res.redirect('/products')
 }
 
-// Authentication
-export const auth = (req, res, next) => {
-  if (req.session?.user) {
-    return next();
-  } else {
-    return res.redirect('/api/session/login');
-  }
-};
+//Current view
+
+export const currentViewController = (req, res) =>{
+  const user = new UserDTO(req.user.user)
+  res.render('/current', {user})
+}

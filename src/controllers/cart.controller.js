@@ -165,3 +165,7 @@ export const deleteCartController = async (req, res) => {
         res.status(500).json({ status: 'error', error: err });
     }
 }
+
+export const purchaseCartController = async (req, res) => {
+  //HACER COSAS
+}
