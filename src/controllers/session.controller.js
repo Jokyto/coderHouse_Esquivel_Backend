@@ -74,7 +74,6 @@ export const githubCallbackController = async(req,res) => {
 
 export const currentViewController = (req, res) =>{
   const user = new UserDTO(req.session.user)
-  console.log(user)
   res.status(200).render('./sessions/current', {
     title: "Current User",
     user: user,

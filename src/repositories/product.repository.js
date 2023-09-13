@@ -9,4 +9,5 @@ export default class ProductRepository {
     lastProduct = async () => await this.dao.lastProduct()
     updateProductById = async (id, data) => await this.dao.update({id: id, data: data})
     deleteProductById = async (id) => await this.dao.deleteProductById(id)
+    updatePrductQuantity = async (productID, quantity) => await this.dao.updatePrductQuantity(productID, quantity)
 }

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { auth } from "../controllers/session.controller.js";
-import { addProductsCartController, cartViewController, clientCartViewController, createCartController, deleteCartController, deleteProductCartController, updateProductCartController } from "../controllers/cart.controller.js";
+import { addProductsCartController, cartViewController, clientCartViewController, createCartController, deleteCartController, deleteProductCartController, updateProductCartController, purchaseCartController } from "../controllers/cart.controller.js";
 import { handlePolicies } from "../middlewares/auth.middleware.js";
 
 const router = Router();
@@ -43,4 +43,6 @@ router.delete('/:cid/product/:pid', deleteProductCartController);
 //endpoint elimina todo el carrito
 router.delete('/:cid', deleteCartController);
 
+//endpoint para comprar
+router.post("/:cid/purchase", purchaseCartController);
 export default router;

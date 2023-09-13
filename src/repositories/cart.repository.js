@@ -12,4 +12,4 @@ export default class CartRepository {
     updateCartID = async (cartID, products) => await this.dao.updateCartID(cartID, products)
     pushProductInCart = async (cartID, productID, updatedQuantity) => await this.dao.pushProductInCart(cartID, productID, updatedQuantity)
     findProductIndexInCart = async (cart, productID) => await this.dao.findProductIndexInCart(cart, productID);
-}
+}   

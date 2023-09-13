@@ -7,4 +7,5 @@ export default class ProductDao{
     lastProduct = async () => await productModel.findOne().sort({ id: -1 }).limit(1)
     updateProductById = async (id, data) => await productModel.updateOne({id: parseInt(id)},{$set: data})
     deleteProductById = async (id) => await productModel.deleteOne({id: parseInt(id)})
+    updatePrductQuantity = async (productID,stock) => await productModel.findOneAndUpdate({ id: productID },{stock: stock})
 }
