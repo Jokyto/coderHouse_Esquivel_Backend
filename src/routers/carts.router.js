@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { auth } from "../controllers/session.controller.js";
 import { addProductsCartController, cartViewController, clientCartViewController, createCartController, deleteCartController, deleteProductCartController, updateProductCartController } from "../controllers/cart.controller.js";
+import { handlePolicies } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -25,13 +26,13 @@ router.get('/', auth, cartViewController)
 // });
 
 // endpoint para leer el carrito de un cliente
-router.get('/:cid', auth,clientCartViewController);
+router.get('/:cid', handlePolicies(["ADMIN", "USER"]), auth,clientCartViewController);
 
 //endpoint para crear un carrito vacio nuevo
 router.post("/", createCartController);
 
 //endpoint agregar al carrito productos
-router.post("/:cid/product/:pid", addProductsCartController);
+router.post("/:cid/product/:pid", handlePolicies(["ADMIN", "USER"]), addProductsCartController);
 
 //endpoint actualiza solo la cantidad pasada por req.body
 router.put("/:cid/product/:pid", updateProductCartController);

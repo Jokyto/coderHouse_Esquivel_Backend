@@ -25,7 +25,7 @@ function deleteProduct(cartID, productID) {
                 } else {
                     Swal.fire({
                         title: 'Error!',
-                        text: 'Error al intentar eliminar el producto, pruebe más tarde por favor!.',
+                        text: 'Error al intentar eliminar el producto, pruebe más tarde por favor!',
                         icon: 'error',
                     });
                 }

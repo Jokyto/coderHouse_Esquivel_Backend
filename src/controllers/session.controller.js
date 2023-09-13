@@ -1,4 +1,4 @@
-import UserDTO from "../dto/user.dto";
+import UserDTO from "../dto/user.dto.js";
 
 // Authentication
 export const auth = (req, res, next) => {
@@ -12,7 +12,7 @@ export const auth = (req, res, next) => {
 // Register
 
 export const registerViewController = async (req, res) => {
-    res.status(200).render("registro");
+    res.status(200).render("./sessions/registro");
 }
 
 export const registerPassportController = async (req, res) => {
@@ -29,7 +29,7 @@ export const registerFailController = (req, res) => {
 // Login
 
 export const loginViewController = async(req,res)=>{
-    res.status(200).render("login")
+    res.status(200).render("./sessions/login")
 }
 
 export const loginPassportController = async (req, res) => {
@@ -73,6 +73,11 @@ export const githubCallbackController = async(req,res) => {
 //Current view
 
 export const currentViewController = (req, res) =>{
-  const user = new UserDTO(req.user.user)
-  res.render('/current', {user})
+  const user = new UserDTO(req.session.user)
+  console.log(user)
+  res.status(200).render('./sessions/current', {
+    title: "Current User",
+    user: user,
+    session: req.session
+  })
 }

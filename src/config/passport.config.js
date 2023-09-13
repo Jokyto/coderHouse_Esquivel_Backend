@@ -14,6 +14,9 @@ const intializePassport = () => {
         passReqToCallback: true,
         usernameField: 'email'
     },async(req, username, password, done) => {
+        const adminEmail =  config.adminEmail
+        const adminPassword = config.adminPassword
+        const adminRoll = config.adminRoll
         const first_name = req.body.first_name
         const last_name = req.body.last_name
         const email = req.body.email
@@ -25,15 +28,25 @@ const intializePassport = () => {
                 return done(null, false)
             }
             const cartForUser = await cartModel.create({})
-            const newUser = {
-                first_name, last_name, email, age, password: createHash(password), cart: cartForUser._id
+            if (email === adminEmail && password === adminPassword) {
+                const rol = adminRoll
+                const newUser = {
+                    first_name, last_name, email, age, password: createHash(password), cart: cartForUser._id,rol
+                }
+                const result = await userModel.create(newUser)
+                return done(null, result)
             }
-            const result = await userModel.create(newUser)
-            return done(null, result)
+            else{
+                const newUser = {
+                    first_name, last_name, email, age, password: createHash(password), cart: cartForUser._id
+                }
+                const result = await userModel.create(newUser)
+                return done(null, result)
+            } 
         }
         catch(err)
         {
-            return done('Error al obtener usuario.')
+            return done(err)
         }    
     }))
 
