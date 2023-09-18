@@ -10,6 +10,8 @@ import cartsRouter from "./routers/carts.router.js";
 import viewsRouter from "./routers/views.router.js";
 import chatRouter from "./routers/chat.router.js"
 import sessionRouter from "./routers/session.router.js"
+//mockServer
+import mocksService from "./routers/mock.router.js";
 // mongoDb
 import mongoose from "mongoose";
 import MongoStore from 'connect-mongo'
@@ -22,6 +24,10 @@ import intializePassport from "./config/passport.config.js";
 import config from "./config/config.js";
 // Command
 import { Command } from "commander";
+//Compression settings
+import compression from "express-compression";
+//Error handling
+import errorHandler from "./middlewares/error.middleware.js"
 
 
 //Hashear contraseña
@@ -41,6 +47,10 @@ const secret = config.secret;
 // Express
 const app = express();
 app.use(express.json());
+app.use(errorHandler);
+app.use(compression({
+  brotli: {enabled: true, zlib: {}},
+}));
 
 //Session
 app.use(session({
@@ -114,9 +124,9 @@ try {
   app.use("/api/products", productsRouter);
   app.use("/api/carts", cartsRouter);
   app.use("/products", viewsRouter);
-  app.use("/chat",chatRouter)
-  app.use("/api/session", sessionRouter)  
-
+  app.use("/chat",chatRouter);
+  app.use("/api/session", sessionRouter);
+  app.use("/mockingproducts", mocksService);
 
 // Socket connections
   io.on('connection', (socket) =>{
