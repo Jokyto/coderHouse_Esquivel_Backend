@@ -8,9 +8,9 @@ const router = Router();
 
 router.get('/register', registerViewController);
   
-router.post('/register', passport.authenticate('register', {failureRedirect: 'api/session/register/fail'}), registerPassportController);
+router.post('/register', passport.authenticate('register', {failureRedirect: '/api/session/register/fail'}), registerPassportController);
   
-router.get('/fail', registerFailController)
+router.get('/register/fail', registerFailController)
 
 // Login
 router.get('/login', loginViewController)

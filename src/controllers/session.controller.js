@@ -23,7 +23,7 @@ export const registerPassportController = async (req, res) => {
 }
 
 export const registerFailController = (req, res) => {
-    res.redirect('api/session/register')
+    res.redirect('/api/session/register')
 }
 
 // Login

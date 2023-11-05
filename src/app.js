@@ -1,157 +1,134 @@
 // Express
 import express from "express";
-import session from 'express-session'
+import session from "express-session";
 import handlebars from "express-handlebars";
+
 // Socket io
 import { Server } from "socket.io";
+import SocketIO from "./utils/socketIo.js";
+
 // Routers
 import productsRouter from "./routers/products.router.js";
 import cartsRouter from "./routers/carts.router.js";
 import viewsRouter from "./routers/views.router.js";
-import chatRouter from "./routers/chat.router.js"
-import sessionRouter from "./routers/session.router.js"
+import chatRouter from "./routers/chat.router.js";
+import sessionRouter from "./routers/session.router.js";
+import logsRouter from "./routers/logs.router.js";
+
 //mockServer
 import mocksService from "./routers/mock.router.js";
+
 // mongoDb
 import mongoose from "mongoose";
-import MongoStore from 'connect-mongo'
-// Hashear contraseña
-import bcrypt from "bcrypt"
+import MongoStore from "connect-mongo";
+
 // Passport
 import passport from "passport";
+
 // Configuration files
 import intializePassport from "./config/passport.config.js";
-import config from "./config/config.js";
+import { defaultPort, uri, secret } from "./utils/variables.js";
+
 // Command
 import { Command } from "commander";
+
 //Compression settings
 import compression from "express-compression";
+
 //Error handling
-import errorHandler from "./middlewares/error.middleware.js"
+import errorHandler from "./middlewares/error.middleware.js";
 
-
-//Hashear contraseña
-export const createHash = password =>{
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-}
-
-export const isValidPassword = (user, password) => {
-  return bcrypt.compareSync(password, user.password)
-}
-
-//Variables de entorno
-const defaultPort = config.defaultPort;
-const uri = config.uri;
-const secret = config.secret;
+//Winston
+import logger from "./utils/logger.js";
 
 // Express
 const app = express();
 app.use(express.json());
 app.use(errorHandler);
-app.use(compression({
-  brotli: {enabled: true, zlib: {}},
-}));
+app.use(
+  compression({
+    brotli: { enabled: true, zlib: {} },
+  })
+);
 
 //Session
-app.use(session({
-  store: MongoStore.create({
+app.use(
+  session({
+    store: MongoStore.create({
       mongoUrl: uri,
-      dbName: 'ecommerce',
+      dbName: "ecommerce",
       mongoOptions: {
-          useNewUrlParser: true,
-          useUnifiedTopology: true
-      }
-  }),
-  secret: secret,
-  resave: true,
-  saveUninitialized: true
-}))
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+    }),
+    secret: secret,
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 
-// In order to accept request outside server domain
-// app.use((req,res,next) => {
-//   res.set('Access-Control-Allow-Origin', '*')
-//   next()
-// })
-// Or install cors library
-// app.use(cors())
+/* In order to accept request outside server domain
+app.use((req,res,next) => {
+  res.set('Access-Control-Allow-Origin', '*')
+  next()
+})
+Or install cors library
+app.use(cors()) */
 
 //Passport
-intializePassport()
-app.use(passport.initialize())
-app.use(passport.session())
+intializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // WebSocket
 try {
-    await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("Connected to database.");
-  } 
-  catch (err) {
-    console.log(err.message);
-  }
+  await mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  logger.info("Connected to database.");
+} catch (err) {
+  logger.error(err.message);
+}
 
 // Command for port definition in inline terminal
-  const program = new Command()
-  program.option('-p <port>', 'Server port!', defaultPort)
-  program.parse()
-  const port = program.opts().p
-  const serverHttp = app.listen(port, () => console.log(`Server up on port ${port}`));
+const program = new Command();
+program.option("-p <port>", "Server port!", defaultPort);
+program.parse();
+const port = program.opts().p;
+const serverHttp = app.listen(port, () =>
+  logger.info(`Server up on port ${port}`)
+);
 
 // Socket IO
-  const io = new Server(serverHttp);
-  
-  app.set("socketio", io);
-  app.use((req, res, next) => {
-    req.io = io;
-    next();
-  });
-  
+const io = new Server(serverHttp);
+
+app.set("socketio", io);
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+
 // Handlebars
-  app.use(express.static("./src/public"));
-  app.engine("handlebars", handlebars.engine());
-  app.set("views", "./src/views");
-  app.set("view engine", "handlebars");
-  
-  const error = [{ error: "El elemento que quiere acceder no existe!" }];
-  
-  // Router
+app.use(express.static("./src/public"));
+app.engine("handlebars", handlebars.engine());
+app.set("views", "./src/views");
+app.set("view engine", "handlebars");
 
-  app.get("/", (req, res) => res.render("login"));
-  app.get("/health", (req, res) => res.send("Ok"));
-  
-  app.use("/api/products", productsRouter);
-  app.use("/api/carts", cartsRouter);
-  app.use("/products", viewsRouter);
-  app.use("/chat",chatRouter);
-  app.use("/api/session", sessionRouter);
-  app.use("/mockingproducts", mocksService);
+const error = [{ error: "El elemento que quiere acceder no existe!" }];
 
-// Socket connections
-  io.on('connection', (socket) =>{
-    console.log('Successfully connected with server!')
-    
-    socket.on("message", async (data) => {
-      try {
-        const newMessage = await messageModel.create(data);
-        const formattedMessage = {
-          _id: newMessage._id,
-          message: newMessage.message,
-          user: newMessage.user,
-        };
-        io.emit("message", formattedMessage); // Emit the message to all connected clients
-      } catch (error) {
-        console.error(error);
-      }
-    });
-    
-    // socket.on("products", async(data) =>{
-      //   try{
-        //     io.emit("products", data )
-        //   }catch(error){
-          //     console.error(error)
-          //   }
-          // })
-})
-        
+// Router
+app.get("/", (req, res) => res.render("login"));
+app.get("/health", (req, res) => res.send("Ok"));
+
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
+app.use("/products", viewsRouter);
+app.use("/chat", chatRouter);
+app.use("/api/session", sessionRouter);
+app.use("/mockingproducts", mocksService);
+app.use("/loggerTest", logsRouter);
+
+// Using socket io
+SocketIO(io);

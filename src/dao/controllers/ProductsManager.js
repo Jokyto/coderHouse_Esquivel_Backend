@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { logger } from '../../utils/logger.js';
 
 class ProductManager
 {
@@ -24,7 +25,7 @@ class ProductManager
         {
             this.path = './src/data/productos.json'
             await fs.promises.writeFile(this.path,JSON.stringify(this.#products,null,'\t'))
-            console.log(`El archivo ${this.path} no esta creado.`)
+            logger.error(`El archivo ${this.path} no esta creado.`)
         }
     }
 

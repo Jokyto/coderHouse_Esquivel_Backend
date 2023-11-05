@@ -1,18 +1,10 @@
-import { Router } from "express"
-import {generateProduct} from "../services/mocksService.js"
+import { createProductController, getProductsController } from "../controllers/mock.controller.js"
+import { Router } from "express";
 
-const router = Router();
-const products = []
+const router = Router()
 
-router.get('/', async (req, res) => {
-    for (let i = 0; i < products.length; i++) {
-        products.push(generateProduct());
-    }
-    res.status(200).render('home', {
-        title: "Products",
-        products: products,
-        session: req.session
-      });
-})
+router.get("/", getProductsController)
+router.post("/", createProductController)
 
-export default router;
+
+export default router

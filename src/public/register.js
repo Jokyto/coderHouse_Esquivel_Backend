@@ -45,16 +45,15 @@ function addUser() {
         }).then(() => {
           window.location.href = '/api/session/login';
         });
-      } 
-      else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error en el registro',
-          text: data.message || 'Un error ocurrio durante el registro.',
-        });
       }
     })
     .catch(error => {
-      console.error('An error occurred:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en el registro',
+        text: 'Un error ocurrio durante el registro.',
+      }).then(() => {
+        window.location.href = '/api/session/register';
+      });
     });
 }

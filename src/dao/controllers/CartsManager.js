@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { logger } from '../../utils/logger.js';
 
 
 class CartsManager
@@ -25,7 +26,7 @@ class CartsManager
         {
             this.path = './src/data/carts.json'
             await fs.promises.writeFile(this.path,JSON.stringify(this.#carts,null,'\t'))
-            console.log(`El archivo ${this.path} no esta creado. No hay carrito, nuevo carrito creado.`)
+            logger.error(`El archivo ${this.path} no esta creado. No hay carrito, nuevo carrito creado.`)
         }
     }
 
@@ -71,7 +72,7 @@ class CartsManager
         }
         catch(error)
         {
-            console.log(`Error: ${error}`)
+            logger.error(`Error: ${error}`)
         }
         
     }
@@ -90,7 +91,7 @@ class CartsManager
             this.#error = undefined
             const index = this.#carts.findIndex((element) => element.id === parseInt(cartID))
             const productIndex = this.#carts[index].products.findIndex((item) => item.productID === parseInt(productID))
-            console.log(productIndex)
+            logger.debug(productIndex)
             if (productIndex != -1) 
             {
                 this.#carts[index].products[productIndex] = {productID: parseInt(productID), quantity: this.#carts[index].products[productIndex].quantity + quantity.quantity}
