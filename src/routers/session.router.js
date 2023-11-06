@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
-import { githubCallbackController, githubLoginController, loginFailController, loginOutController, loginPassportController, loginViewController, registerFailController, registerPassportController, registerViewController,currentViewController } from "../controllers/session.controller.js";
+import {forgotPasswordEmailSendController,forgotPasswordViewController, githubCallbackController, githubLoginController, loginFailController, loginOutController, loginPassportController, loginViewController, registerFailController, registerPassportController, registerViewController,currentViewController, verifyTokenController, resetPasswordViewController, resetPasswordResetController } from "../controllers/session.controller.js";
 
 const router = Router();
 
@@ -27,7 +27,19 @@ router.get('/github', passport.authenticate('github', { scope: ['user: email']})
 
 router.get('/githubcallback', passport.authenticate('github', {failureRedirect:'/login'}), githubCallbackController)
 
-//Current user
+// Current user
 router.get('/current', currentViewController)
+
+// Forgot password
+router.get('/forgot', forgotPasswordViewController)
+
+router.post('/forgot', forgotPasswordEmailSendController)
+
+router.get('/verifyToken/:token', verifyTokenController)
+
+// Reset password
+router.get('/resetPassword', resetPasswordViewController)
+
+router.post('/resetPassword', resetPasswordResetController)
 
 export default router

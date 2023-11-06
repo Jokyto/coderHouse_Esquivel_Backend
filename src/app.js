@@ -5,7 +5,7 @@ import handlebars from "express-handlebars";
 
 // Socket io
 import { Server } from "socket.io";
-import SocketIO from "./utils/socketIo.js";
+import {socketIO} from "./utils.js";
 
 // Routers
 import productsRouter from "./routers/products.router.js";
@@ -27,7 +27,7 @@ import passport from "passport";
 
 // Configuration files
 import intializePassport from "./config/passport.config.js";
-import { defaultPort, uri, secret } from "./utils/variables.js";
+import { defaultPort, uri, secret } from "./utils.js";
 
 // Command
 import { Command } from "commander";
@@ -39,7 +39,7 @@ import compression from "express-compression";
 import errorHandler from "./middlewares/error.middleware.js";
 
 //Winston
-import logger from "./utils/logger.js";
+import {logger} from "./utils.js";
 
 // Express
 const app = express();
@@ -131,4 +131,4 @@ app.use("/mockingproducts", mocksService);
 app.use("/loggerTest", logsRouter);
 
 // Using socket io
-SocketIO(io);
+socketIO(io);

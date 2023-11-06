@@ -1,0 +1,26 @@
+<h1 class="mt-5 text-center">Forgot Password</h1>
+<div class="justify-content-center d-flex">
+  <div class="col-6">
+    <div id="forgotPasswordView" class="mt-4">
+      <form id="forgotPasswordForm">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email:</label>
+          <input
+            type="text"
+            id="email"
+            name="email"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="d-flex justify-content-center">
+          <button type="button" id="forgotPasswordButton" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/forgotPassword.js"></script>

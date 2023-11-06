@@ -2,7 +2,7 @@ import { createProduct, generateProduct } from "../services/mocksService.js";
 import CustomError from "../services/errors/custom_error.js";
 import EErrors from "../services/errors/enums.js";
 import { generateProductErrorInfo } from "../services/errors/info.js";
-import logger from "../utils/logger.js";
+import {logger} from "../utils.js";
 
 const products = []
 
