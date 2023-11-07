@@ -1,5 +1,8 @@
 import mongoose from "mongoose"
 import mongoosePaginate from "mongoose-paginate-v2"
+import config from "../../config/config.js"
+
+const adminEmail = config.adminEmail;
 
 const productCollection = 'products'
 
@@ -12,7 +15,12 @@ const productSchema = new mongoose.Schema({
     status: {type: Boolean, default: true},
     stock: {type: Number, require: true},
     category: {type: String, require: true},
-    thumbnail: {type: [String], default: []}
+    thumbnail: {type: [String], default: []},
+    owner: {
+        type: String,
+        ref: 'users',
+        default: adminEmail,
+    },
 })
 
 productSchema.plugin(mongoosePaginate)

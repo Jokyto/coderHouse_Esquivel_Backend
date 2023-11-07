@@ -1,58 +1,61 @@
 <h1 class="text-center mt-3">{{title}}</h1>
 <hr />
-<div class="justify-content-center d-flex">
-  <button type="button" class="mb-5 mt-5 btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
-    Nuevo producto
-  </button>
-</div>
+<div id="Modal">
+    <div class="justify-content-center d-flex">
+    <button type="button" class="mb-5 mt-5 btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+        Nuevo producto
+    </button>
+    </div>
 
-<div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addProductModalLabel">Añadir producto</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addProductForm">
-                    <div class="mb-3 form-group">
-                        <label for="title">Titulo</label>
-                        <input type="text" class="form-control" id="title" name="title">
-                    </div>
-                    <div class="mb-3 form-group">
-                        <label for="description">Descripción</label>
-                        <textarea class="form-control" id="description" name="description" ></textarea>
-                    </div>
-                    <div class="mb-3 form-group">
-                        <label for="price">Price</label>
-                        <input type="number" class="form-control" id="price" name="price" >
-                    </div>
-                    <div class="mb-3 form-group">
-                        <label for="code">Código</label>
-                        <input type="text" class="form-control" id="code" name="code" required>
-                    </div>
-                    <div class="mb-3 form-check">
-                        <label class="form-check-label" for="status">Status</label>
-                        <input type="checkbox" class="form-check-input" id="status">
-                    </div>
-                    <div class="mb-3 form-group">
-                        <label for="stock">Stock</label>
-                        <input type="number" class="form-control" id="stock" name="stock" >
-                    </div>
-                    <div class="mb-3 form-group">
-                        <label for="category">Categoria</label>
-                        <input type="text" class="form-control" id="category" name="category" >
-                    </div>
-                    <div class="mb-3 form-group">
-                        <label for="thumbnail">Thumbnail</label>
-                        <input type="text" class="form-control" id="thumbnail" name="thumbnail" >
-                    </div>
-                    <button type="submit" class="btn btn-primary">Agregar productos</button>
-                </form>
+    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Añadir producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProductForm">
+                        <div class="mb-3 form-group">
+                            <label for="title">Titulo</label>
+                            <input type="text" class="form-control" id="title" name="title">
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label for="description">Descripción</label>
+                            <textarea class="form-control" id="description" name="description" ></textarea>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label for="price">Price</label>
+                            <input type="number" class="form-control" id="price" name="price" >
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label for="code">Código</label>
+                            <input type="text" class="form-control" id="code" name="code" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <label class="form-check-label" for="status">Status</label>
+                            <input type="checkbox" class="form-check-input" id="status">
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label for="stock">Stock</label>
+                            <input type="number" class="form-control" id="stock" name="stock" >
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label for="category">Categoria</label>
+                            <input type="text" class="form-control" id="category" name="category" >
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label for="thumbnail">Thumbnail</label>
+                            <input type="text" class="form-control" id="thumbnail" name="thumbnail" >
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar productos</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 <table class="table table-dark table-hover table-striped" id="RealProductsTable">
     <thead>
         <tr>
@@ -78,7 +81,22 @@
     </tbody>
 </table>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const userRole =  "{{session.user.rol}}";
+        const addProductButton = document.getElementById("Modal");
+        
+        if (userRole != "ADMIN") {
+            addProductButton.style.display = "none";
+        }
+        else
+        {
+            addProductButton.style.display = "block";
+        }
+    });
+</script>
+
 <script src="/socket.io/socket.io.js"></script>
-<script src="/chat.js"></script>
+<script src="/realTimeProducts.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 

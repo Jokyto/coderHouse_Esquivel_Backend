@@ -10,35 +10,60 @@
                 <td><strong>Código</strong></td>
                 <td><strong>Stock</strong></td>
                 <td><strong>Categoria</strong></td>
-                <td></td>
+                <td id="AgregarHeader"></td>
+                <td id="BorrarHeader"></td>
             </tr>
         </thead>
         <tbody>
             {{#each products.docs}}
-                <tr>
-                    <td>{{this.title}}</td>
-                    <td>{{this.description}}</td>
-                    <td>{{this.price}}</td>
-                    <td>{{this.code}}</td>
-                    <td>{{this.stock}}</td>
-                    <td>{{this.thumbnail}}</td>
-                    <td>
-                        <button class="btn btn-success" onclick="addToCart('{{this._id}}')">Agregar</button>
-                    </td>
-                </tr>
+            <tr>
+                <td>{{this.title}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.price}}</td>
+                <td>{{this.code}}</td>
+                <td>{{this.stock}}</td>
+                <td>{{this.thumbnail}}</td>
+                <td id="Agregar">
+                    <button class="btn btn-success" onclick="addToCart('{{this._id}}')">Agregar</button>
+                </td>
+                <td id="Borrar" owner="{{this.owner}}">
+                    <button class="btn btn-danger" onclick="deleteItem('{{this.id}}')">Borrar</button>
+                </td>
+            </tr>
             {{/each}}
         </tbody>
     </table>
     <div class="d-flex justify-content-center">
         {{#if products.hasPrevPage}}
-            <a class="me-2 btn btn-primary" href="{{products.prevLink}}" role="button">Anterior</a>
+        <a class="me-2 btn btn-primary" href="{{products.prevLink}}" role="button">Anterior</a>
         {{/if}}
         {{#if products.hasNextPage}}
-            <a class="ms-2 btn btn-primary" href="{{products.nextLink}}" role="button">Siguiente</a>
+        <a class="ms-2 btn btn-primary" href="{{products.nextLink}}" role="button">Siguiente</a>
         {{/if}}
     </div>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const borrarButtons = document.querySelectorAll("#Borrar");
+
+        borrarButtons.forEach((button) => {
+            const owner = button.getAttribute("owner");
+            const agregarButton = button.parentElement.querySelector("#Agregar");
+            
+            if (owner == "{{user}}") {
+                agregarButton.style.display = "none";
+                AgregarHeader.style.display = "none";
+                button.style.display = "block";
+            }
+            else{
+                agregarButton.style.display = "block";
+                button.style.display = "none";
+                BorrarHeader.style.display = "none";
+            }
+        });
+    });
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="/index.js"></script>
-

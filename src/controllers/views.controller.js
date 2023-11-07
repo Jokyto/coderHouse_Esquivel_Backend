@@ -24,11 +24,12 @@ export const getAllProducts = async (req, res) => {
       const products = await productModel.paginate({}, { page, limit, lean: true, sort: {price: sort} })
       products.prevLink = products.hasPrevPage ? (sort != 0 ? `/products?page=${products.prevPage}&?limit=${limit}&sort=${sort}` : `/products?page=${products.prevPage}&?limit=${limit}`)  : ''
       products.nextLink = products.hasNextPage ? (sort != 0 ? `/products?page=${products.nextPage}&?limit=${limit}&sort=${sort}` : `/products?page=${products.nextPage}&?limit=${limit}`)  : ''
-  
+      
       res.status(200).render('home', {
         title: "Products",
         products: products,
-        session: req.session
+        session: req.session,
+        user: req.session.user.email
       });
     } catch (error) {
       res.status(404).json({ status: 'error', error: error });

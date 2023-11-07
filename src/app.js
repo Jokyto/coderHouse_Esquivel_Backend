@@ -14,6 +14,7 @@ import viewsRouter from "./routers/views.router.js";
 import chatRouter from "./routers/chat.router.js";
 import sessionRouter from "./routers/session.router.js";
 import logsRouter from "./routers/logs.router.js";
+import usersRouter from "./routers/user.router.js";
 
 //mockServer
 import mocksService from "./routers/mock.router.js";
@@ -129,6 +130,6 @@ app.use("/chat", chatRouter);
 app.use("/api/session", sessionRouter);
 app.use("/mockingproducts", mocksService);
 app.use("/loggerTest", logsRouter);
-
+app.use("/api/users", usersRouter);
 // Using socket io
 socketIO(io);

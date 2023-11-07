@@ -75,17 +75,38 @@ export const updateProductController = async (req,res) =>{
 
 export const deleteProductController = async (req,res) =>{
     const id = req.params.id
-    try{
-        // Deleting a Product from the DB with the given ID
-        const deleted = await ProductService.deleteProductById(id)
-
-        // Getting all the products from the DB
-        const products = await ProductService.getAllProducts()
-
-        //   Emitting to the IO socket
-        req.io.emit('products', products)
-        res.status(200).json({status: 'success', payload: deleted, message:`Se elimino el producto con id = ${id}`})
-    }catch(err){
-        res.status(500).json({status: 'error', error: err})
+    let result = await ProductService.getProductBy_Id(id)
+    
+    if (result) {
+        try {
+            // Deleting a Product from the DB with the given ID
+            const deleted = await ProductService.deleteProductBy_Id(id)
+    
+            // Getting all the products from the DB
+            const products = await ProductService.getAllProducts()
+    
+            //   Emitting to the IO socket
+            req.io.emit('products', products)
+            res.status(200).json({status: 'success', payload: deleted, message:`Se elimino el producto con id = ${id}`})
+        } catch (error) {
+            res.status(500).json({status: 'error', error: err})
+        }
     }
+    else{
+        try{
+            // Deleting a Product from the DB with the given ID
+            const deleted = await ProductService.deleteProductById(id)
+    
+            // Getting all the products from the DB
+            const products = await ProductService.getAllProducts()
+    
+            //   Emitting to the IO socket
+            req.io.emit('products', products)
+            res.status(200).json({status: 'success', payload: deleted, message:`Se elimino el producto con id = ${id}`})
+        }catch(err){
+            res.status(500).json({status: 'error', error: err})
+        }
+    }
+
+
 }

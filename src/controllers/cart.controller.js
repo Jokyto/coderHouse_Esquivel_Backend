@@ -44,7 +44,7 @@ export const addProductsCartController = async (req, res) => {
   const cartID = req.session.user.cart;
   const productID = req.params.pid;
   const quantity = !req.body ? req.body : { quantity: 1 };
-  const existsCart = await CartService.existsCart();
+  const existsCart = await CartService.existsCart(cartID);
   if (existsCart) {
     try {
       const existProductId = await CartService.existProductInCart(

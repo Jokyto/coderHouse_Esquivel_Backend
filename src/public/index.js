@@ -73,6 +73,49 @@ function addToCart(productId) {
   });
 }
 
+//Cart deleting products
+function deleteItem(productID) {
+    Swal.fire({
+        title: 'Confirmar eliminación',
+        text: 'Esta seguro de querer borrar el producto?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, estoy seguro!',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/api/products/${productID}`, {
+                method: "DELETE",
+            })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire({
+                        title: 'Listo!',
+                        text: 'El producto ha sido eliminado.',
+                        icon: 'success',
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Error al intentar eliminar el producto, pruebe más tarde por favor!',
+                        icon: 'error',
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error al eliminar el producto:", error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Un error ocurrio durante la eliminación.',
+                    icon: 'error',
+                });
+            });
+        }
+    });
+}
 
 
 
