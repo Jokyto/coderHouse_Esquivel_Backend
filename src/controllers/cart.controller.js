@@ -15,6 +15,8 @@ export const clientCartViewController = async (req, res) => {
   try {
     const id = req.params.cid;
     const result = await CartService.getCartById(id);
+
+    console.log(req.session.user)
     if (!result) {
       return res.status(404).json({ status: "error", error: "Not Found" });
     }

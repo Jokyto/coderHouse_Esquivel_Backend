@@ -42,6 +42,10 @@ import errorHandler from "./middlewares/error.middleware.js";
 //Winston
 import {logger} from "./utils.js";
 
+// Swagger
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
+
 // Express
 const app = express();
 app.use(express.json());
@@ -81,6 +85,21 @@ app.use(cors()) */
 intializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Swagger
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.1',
+    info: {
+      title: 'Documentation of API eccomerce',
+      description: 'API Description',
+    }
+  },
+  apis: ['./docs/**/*.yaml']
+}
+
+const specs = swaggerJSDoc(swaggerOptions)
+app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 // WebSocket
 try {
@@ -131,5 +150,6 @@ app.use("/api/session", sessionRouter);
 app.use("/mockingproducts", mocksService);
 app.use("/loggerTest", logsRouter);
 app.use("/api/users", usersRouter);
+
 // Using socket io
 socketIO(io);

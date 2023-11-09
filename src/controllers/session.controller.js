@@ -43,10 +43,8 @@ export const loginViewController = async(req,res)=>{
 }
 
 export const loginPassportController = async (req, res) => {
-
     req.session.user = req.user
     res.status(200).json({ status: 'success', message: 'Login successful'})
-  
 }
 
 export const loginOutController =  (req, res) => {

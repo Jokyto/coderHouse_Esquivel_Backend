@@ -13,7 +13,14 @@ const userSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'carts'
         },
-        rol: {type: String, default: "USER"}
+        rol: {type: String, default: "USER"},
+        documents: [
+            {
+                name: { type: String },
+                reference : { type: String }
+            }
+        ],
+        last_connection: { type: Date, default: Date.now },
     }
 )
 

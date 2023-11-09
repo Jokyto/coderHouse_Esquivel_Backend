@@ -1,0 +1,34 @@
+<div class="justify-content-center">
+    <h1 class="text-center m-5">{{title}}</h1>
+    <table class="table table-dark table-hover table-striped">
+        <thead>
+            <tr>
+                <td><strong>Nombre</strong></td>
+                <td><strong>Apellido</strong></td>
+                <td><strong>Email</strong></td>
+                <td><strong>Cart</strong></td>
+                <td><strong>Roll</strong></td>
+                <td><strong>Última conexión</strong></td>
+                <td id="ChangeRollHeader"></td>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each users}}
+            <tr>
+                <td>{{this.first_name}}</td>
+                <td>{{this.last_name}}</td>
+                <td>{{this.email}}</td>
+                <td>{{this.cart}}</td>
+                <td>{{this.rol}}</td>
+                <td>{{this.last_connection}}</td>
+                <td id="Change Roll">
+                    <button class="btn btn-info" onclick="changeRoll('{{this._id}}')">Change Roll</button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="/users.js"></script>

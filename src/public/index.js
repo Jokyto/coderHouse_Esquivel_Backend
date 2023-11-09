@@ -116,11 +116,3 @@ function deleteItem(productID) {
         }
     });
 }
-
-
-
-
-
-
-
-

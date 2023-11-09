@@ -1,0 +1,123 @@
+paths:
+  /api/products:
+    get:
+      tags:
+        - Products
+      summary: Get all products
+      responses:
+        '200':
+          description: Successfull operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+    post:
+      tags:
+        - Products
+      summary: Create a new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'  # Referencia al esquema de "Product"
+      responses:
+        '201':
+          description: Product created successfully
+        '400':
+          description: Bad request - Invalid data provided
+  
+  /api/products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Get product by id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfull operation
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Product'
+
+    put:
+      tags:
+        - Products
+      summary: Update product by id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'  # Referencia al esquema de "Product"
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfull operation
+
+    delete:
+      tags:
+        - Products
+      summary: Delete product by id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfull operation
+        '403':
+          description: Acceso no Autorizado
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Remera azul"
+        description:
+          type: string
+          example: "Lisa sin estampas. Talles disponibles: XS, S, M, L, XL, XXL"
+        code:
+          type: string
+          example: "B502"
+        status:
+          type: boolean
+          example: true
+        stock:
+          type: number
+          example: 5
+        category:
+          type: string
+          example: "Remeras"
+        thumbnails:
+          type: array
+          items:
+            type: string
+          example: ["image1.jpg", "image2.jpg", "image3.jpg"]
+      required:
+        - title
+        - description
+        - price
+        - code
+        - stock
+        - category

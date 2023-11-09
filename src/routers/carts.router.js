@@ -26,7 +26,7 @@ router.get('/', auth, cartViewController)
 // });
 
 // endpoint para leer el carrito de un cliente
-router.get('/:cid', handlePolicies(["ADMIN", "USER"]), auth,clientCartViewController);
+router.get('/:cid', handlePolicies(["ADMIN", "USER", "PREMIUM"]), auth,clientCartViewController);
 
 //endpoint para crear un carrito vacio nuevo
 router.post("/", createCartController);

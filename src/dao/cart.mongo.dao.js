@@ -3,7 +3,7 @@ import {cartModel} from "./models/carts.models.js"
 export default class CartDAO {
     getCarts = async () => await cartModel.find();
     getCartById = async (id) => {
-        const cart = cartModel.findOne({ '_id': id }).populate('products.productID').lean().exec();
+        const cart = await cartModel.findOne({ '_id': id }).populate('products.productID').lean().exec();
         return cart;
     };
     createEmptyCart = async () => await cartModel.create({})
@@ -13,7 +13,7 @@ export default class CartDAO {
         { _id: cartID, 'products.productID': productID },
         { $set: { 'products.$.quantity': updatedQuantity } }
         )
-    updateCartID = async (cartID, products) => cartModel.findOneAndUpdate({ _id: cartID },{ $set: { products: products }});
+    updateCartID = async (cartID, products) => await cartModel.findOneAndUpdate({ _id: cartID },{ $set: { products: products }});
     pushProductInCart = async (cartID, productID,quantity) => await cartModel.findOneAndUpdate(
         { _id: cartID },
         { $push: { products: { productID: productID, quantity: parseInt(quantity) } } }

@@ -1,5 +1,4 @@
 // Register
-
 document.getElementById('registerUser').addEventListener('submit', event => {
     event.preventDefault();
     addUser();

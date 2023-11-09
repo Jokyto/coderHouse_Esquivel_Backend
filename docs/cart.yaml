@@ -1,0 +1,102 @@
+paths:
+  /api/carts:
+    get:
+      tags:
+        - Cart
+      summary: Get all Carts
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+
+    post:
+      tags:
+        - Cart
+      summary: Create a Cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        '201':
+          description: Cart created successfully
+        '400':
+          description: Bad request - Invalid data provided
+
+  /api/carts/{id}:
+    get:
+      tags:
+        - Cart
+      summary: Get cart by id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfull operation
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Cart'
+    
+    delete:
+      tags:
+        - Cart
+      summary: Delete cart by id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfull operation
+        '403':
+          description: Acceso no Autorizado
+
+    put:
+      tags:
+        - Cart
+      summary: Update cart by id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'  # Referencia al esquema de "Product"
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfull operation
+
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties: 
+        id:
+          type: string
+          example: a2bnpo64aj52
+        products:
+          type: array 
+          items:
+            type: string
+          example: ["producto1", "producto2", "producto3"]

@@ -1,5 +1,4 @@
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -43,7 +42,7 @@
             </div>
                 <div class="d-flex align-items-center">
                     {{#if session.user}}
-                        <a class="btn btn-primary me-2" id="changeRol" href="/api/users/premium/{{session.user._id}}">Change Rol</a>
+                        <button class="btn btn-primary me-2" id="changeRol" onclick="changeUserRole('{{session.user._id}}')">Change Roll</button>
                         <span class="text-light me-3">Bienvenido, {{session.user.first_name}} | Role: {{session.user.rol}}</span>
                         <a href="/api/session/login/out" class="btn btn-primary">Log out</a>
                     {{else}}
@@ -54,24 +53,11 @@
         </div>
     </nav>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const userRole =  "{{session.user.rol}}";
-            const changeRol = document.getElementById("changeRol");
-            
-            if (userRole != "ADMIN") {
-                changeRol.style.display = "block";
-            }
-            else
-            {
-                changeRol.style.display = "none";
-            }
-        });
-    </script>
+
     <div class="container">{{{body}}}</div>
+    <script src="/users.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 </body>
-
 </html>

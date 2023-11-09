@@ -6,10 +6,10 @@ import { handlePolicies } from "../middlewares/auth.middleware.js"
 const router = Router()
 
 // endpoint to view the products
-router.get('/', auth, handlePolicies(["ADMIN", "USER", "PUBLIC"]), productViewsController)
+router.get('/', auth, handlePolicies(["ADMIN", "USER", "PUBLIC", "PREMIUM"]), productViewsController)
 
 // endpoint to view one specific product
-router.get('/:idProduct', auth, handlePolicies(["ADMIN", "USER", "PUBLIC"]), productIdViewsController)
+router.get('/:idProduct', auth, handlePolicies(["ADMIN", "USER", "PUBLIC", "PREMIUM"]), productIdViewsController)
 
 // enpoint to create a product
 router.post('/', handlePolicies(["ADMIN"]), createProductController)
