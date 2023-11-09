@@ -21,7 +21,6 @@ export const userPremiumViewController = async(req, res) => {
         // Getting all the users
         const users = await UserService.getUsers()
         const formattedUsers = formatUsers(users)
-        console.log(formattedUsers)
         res.status(200).render('users', {
             title: "Users",
             users: formattedUsers,
@@ -35,14 +34,18 @@ export const userPremiumViewController = async(req, res) => {
 
 export const userPremiumChangeController = async(req,res) => {
     const userID = req.params.uid;
+    const currentRoll = req.session.user.rol;
     try 
     {
-        let user = await UserService.getUserById(userID)
-        await UserService.updateUserRol(userID , user.rol === 'USER' ? 'PREMIUM' : 'USER')
-        user = await UserService.getUserById(userID)
-        req.session.user = user
-
-        res.status(200).redirect('/products');
+        if (currentRoll != "ADMIN") {
+            let user = await UserService.getUserById(userID)
+            await UserService.updateUserRol(userID , user.rol === 'USER' ? 'PREMIUM' : 'USER')
+            user = await UserService.getUserById(userID)
+            req.session.user = user
+            res.status(200).json({ status: 'success', message: "The roll has been changed successfully!" });
+        }else{
+            res.status(404).json({ status: 'error', message: "Your role can't be changed!" });
+        }
     } catch (error) 
     {
         res.status(500).json({ status: 'error', message: error.message })

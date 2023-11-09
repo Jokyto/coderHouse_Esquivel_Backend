@@ -16,7 +16,6 @@ export const clientCartViewController = async (req, res) => {
     const id = req.params.cid;
     const result = await CartService.getCartById(id);
 
-    console.log(req.session.user)
     if (!result) {
       return res.status(404).json({ status: "error", error: "Not Found" });
     }
@@ -248,6 +247,19 @@ export const purchaseCartController = async (req, res) => {
           productId: productInCart.productID._id,
           quantity: quantity,
         });
+        // Looking for the product index in the cart
+        const productIndex = CartService.findProductIndexInCart(cart, productID);
+
+        if (productIndex === -1) {
+          return res
+            .status(404)
+            .json({ status: "error", message: "Product not found in the cart" });
+        }
+        // Deleting the product from the cart
+        cart.products.splice(productIndex, 1);
+
+        // Updating the cart
+        await CartService.updateCartID(cartID, cart.products);
       } else {
         failedToPurchase.push(productInCart.productID._id);
       }

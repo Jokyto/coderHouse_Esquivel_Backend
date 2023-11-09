@@ -22,7 +22,7 @@
                 <td>{{this.rol}}</td>
                 <td>{{this.last_connection}}</td>
                 <td id="Change Roll">
-                    <button class="btn btn-info" onclick="changeRoll('{{this._id}}')">Change Roll</button>
+                    <button class="btn btn-info" onclick="changeUserRole('{{this._id}}')">Change Roll</button>
                 </td>
             </tr>
             {{/each}}
@@ -30,5 +30,4 @@
     </table>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="/users.js"></script>

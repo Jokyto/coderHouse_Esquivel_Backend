@@ -15,23 +15,27 @@
         </thead>
         <tbody>
             {{#each products}}
-                <tr>
-                    <td>{{this.productID.title}}</td>
-                    <td>{{this.productID.description}}</td>
-                    <td>{{this.productID.price}}</td>
-                    <td>{{this.productID.code}}</td>
-                    <td>{{this.productID.category}}</td>
-                    <td>{{this.quantity}}</td>
-                    <td>
-                        <form id="deleteForm_{{this.productID._id}}" method="POST" onsubmit="deleteProduct('{{../title}}', '{{this.productID._id}}'); return false;">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn btn-danger">Borrar</button>
-                        </form>
-                    </td>
-                </tr>
+            <tr>
+                <td>{{this.productID.title}}</td>
+                <td>{{this.productID.description}}</td>
+                <td>{{this.productID.price}}</td>
+                <td>{{this.productID.code}}</td>
+                <td>{{this.productID.category}}</td>
+                <td>{{this.quantity}}</td>
+                <td>
+                    <form id="deleteForm_{{this.productID._id}}" method="POST"
+                        onsubmit="deleteProduct('{{../title}}', '{{this.productID._id}}'); return false;">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-danger">Borrar</button>
+                    </form>
+                </td>
+            </tr>
             {{/each}}
         </tbody>
     </table>
+    <div class="mb-3 d-flex justify-content-center">
+        <button type="button" onclick="purchase('{{title}}')" class="btn btn-primary">Comprar!</button>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>

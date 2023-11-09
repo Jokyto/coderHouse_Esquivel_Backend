@@ -6,4 +6,5 @@ export default class UserRepository {
     getUsers = async () => await this.dao.getUsers()
     getUserById = async (id) => await this.dao.getUserById(id)
     updateUserRol = async (id,rol) => await this.dao.updateUserRol(id,rol)
+    updateUserLastConection = async (id,time) => await this.dao.updateUserLastConection(id,time)
 }

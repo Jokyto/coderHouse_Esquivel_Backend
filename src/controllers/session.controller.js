@@ -4,6 +4,7 @@ import { createHash, generateRandomToken, logger } from "../utils.js";
 import UserPasswordModel from "../dao/models/user-password.model.js";
 import config from "../config/config.js";
 import nodemailer from 'nodemailer';
+import { UserService } from "../services/index.js"
 
 export const nodemailer_user = config.nodemailer_user;
 export const nodemailer_pass = config.nodemailer_pass;
@@ -44,6 +45,8 @@ export const loginViewController = async(req,res)=>{
 
 export const loginPassportController = async (req, res) => {
     req.session.user = req.user
+    let time =  Date.now()
+    await UserService.updateUserLastConection(req.user._id, time)
     res.status(200).json({ status: 'success', message: 'Login successful'})
 }
 

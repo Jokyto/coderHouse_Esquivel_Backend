@@ -142,13 +142,13 @@ const error = [{ error: "El elemento que quiere acceder no existe!" }];
 app.get("/", (req, res) => res.render("login"));
 app.get("/health", (req, res) => res.send("Ok"));
 
-app.use("/api/products", productsRouter);
-app.use("/api/carts", cartsRouter);
-app.use("/products", viewsRouter);
-app.use("/chat", chatRouter);
-app.use("/api/session", sessionRouter);
 app.use("/mockingproducts", mocksService);
 app.use("/loggerTest", logsRouter);
+app.use("/products", viewsRouter);
+app.use("/chat", chatRouter);
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
+app.use("/api/session", sessionRouter);
 app.use("/api/users", usersRouter);
 
 // Using socket io
